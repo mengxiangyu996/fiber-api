@@ -30,7 +30,7 @@ create table if not exists `menu` (
     `parent_id` int(10) comment '父级id',
     `name` varchar(128) comment '菜单名',
     `type` tinyint(3) comment '类型：1-目录；2-菜单；3-按钮',
-    `sort` int(10) comment '排序',
+    `sort` int(10) default 0 comment '排序',
     `path` varchar(128) comment '路由地址',
     `component` varchar(128) comment '组件',
     `icon` varchar(128) comment '图标',
