@@ -20,7 +20,7 @@ func Init() {
 		return
 	}
 
-	sqlcontent, err := ioutil.ReadFile("./database/init.sql")
+	sqlcontent, err := ioutil.ReadFile("database/init.sql")
 	if err != nil {
 		panic(err)
 	}
