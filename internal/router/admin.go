@@ -52,12 +52,6 @@ func AdminRouter(app *fiber.App) {
 		authApi.Post("permission/delete", (&admin.Permission{}).Delete) // 删除权限
 		authApi.Get("permission/page", (&admin.Permission{}).Page)      // 权限列表
 		authApi.Get("permission/detail", (&admin.Permission{}).Detail)  // 权限详情
-
-		// 管理员角色操作
-
-		// 角色菜单操作
-
-		// 角色权限操作
 	}
 
 }
