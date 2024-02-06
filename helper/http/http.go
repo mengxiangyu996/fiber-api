@@ -3,7 +3,7 @@ package http
 import (
 	"bytes"
 	"context"
-	"encoding/Json"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"

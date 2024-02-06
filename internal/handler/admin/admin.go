@@ -7,7 +7,6 @@ import (
 	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/response"
-	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -142,8 +141,8 @@ func (*Admin) Delete(ctx *fiber.Ctx) error {
 // 管理员列表
 func (*Admin) Page(ctx *fiber.Ctx) error {
 
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
-	size, _ := strconv.Atoi(ctx.Query("size", "10"))
+	page := ctx.QueryInt("page", 1)
+	size := ctx.QueryInt("size", 10)
 
 	type request struct {
 		Username string `query:"username"`
@@ -172,7 +171,7 @@ func (*Admin) Page(ctx *fiber.Ctx) error {
 // 管理员详情
 func (*Admin) Detail(ctx *fiber.Ctx) error {
 
-	id, _ := strconv.Atoi(ctx.Query("id"))
+	id := ctx.QueryInt("id")
 	// 未传值默认当前用户
 	if id <= 0 {
 		id, _ = helper.GetTokenPayload(ctx)

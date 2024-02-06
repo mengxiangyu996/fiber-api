@@ -4,7 +4,6 @@ import (
 	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/response"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -139,7 +138,7 @@ func (*Menu) Tree(ctx *fiber.Ctx) error {
 // 菜单详情
 func (*Menu) Detail(ctx *fiber.Ctx) error {
 
-	id, _ := strconv.Atoi(ctx.Query("id"))
+	id := ctx.QueryInt("id")
 	if id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}

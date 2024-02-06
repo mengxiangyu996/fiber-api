@@ -4,7 +4,6 @@ import (
 	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/response"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -104,8 +103,8 @@ func (*Role) Delete(ctx *fiber.Ctx) error {
 // 角色列表
 func (*Role) Page(ctx *fiber.Ctx) error {
 
-	page, _ := strconv.Atoi(ctx.Query("page", "1"))
-	size, _ := strconv.Atoi(ctx.Query("size", "10"))
+	page := ctx.QueryInt("page", 1)
+	size := ctx.QueryInt("size", 10)
 
 	list, count := (&service.Role{}).GetPage(page, size)
 
@@ -118,7 +117,7 @@ func (*Role) Page(ctx *fiber.Ctx) error {
 // 角色详情
 func (*Role) Detail(ctx *fiber.Ctx) error {
 
-	id, _ := strconv.Atoi(ctx.Query("id"))
+	id := ctx.QueryInt("id")
 	if id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
@@ -157,7 +156,7 @@ func (*Role) BindMenu(ctx *fiber.Ctx) error {
 // 绑定菜单列表
 func (*Role) Menus(ctx *fiber.Ctx) error {
 
-	roleId, _ := strconv.Atoi(ctx.Query("roleId"))
+	roleId := ctx.QueryInt("roleId")
 	if roleId <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
@@ -207,7 +206,7 @@ func (*Role) BindPermission(ctx *fiber.Ctx) error {
 // 绑定权限列表
 func (*Role) Permissions(ctx *fiber.Ctx) error {
 
-	roleId, _ := strconv.Atoi(ctx.Query("roleId"))
+	roleId := ctx.QueryInt("roleId")
 	if roleId <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
