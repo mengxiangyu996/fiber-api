@@ -26,26 +26,17 @@ type MenuTree struct {
 
 // 创建菜单
 func (*Menu) Create(menu *model.Menu) error {
-
-	err := db.GormClient.Model(&model.Menu{}).Create(&menu).Error
-
-	return err
+	return db.GormClient.Model(&model.Menu{}).Create(&menu).Error
 }
 
 // 更新菜单
 func (*Menu) Update(menu *model.Menu) error {
-
-	err := db.GormClient.Model(&model.Menu{}).Where("id = ?", menu.Id).Updates(&menu).Error
-
-	return err
+	return db.GormClient.Model(&model.Menu{}).Where("id = ?", menu.Id).Updates(&menu).Error
 }
 
 // 删除菜单
 func (*Menu) Delete(id int) error {
-
-	err := db.GormClient.Model(&model.Menu{}).Where("id = ?", id).Delete(nil).Error
-
-	return err
+	return db.GormClient.Model(&model.Menu{}).Where("id = ?", id).Delete(nil).Error
 }
 
 // 获取下级菜单

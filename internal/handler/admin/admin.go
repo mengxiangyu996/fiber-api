@@ -52,7 +52,9 @@ func (*Admin) Create(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Username == "" {
 		return response.Error(ctx, "缺少参数")
@@ -63,7 +65,7 @@ func (*Admin) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "管理员已存在")
 	}
 
-	adminId := (&service.Admin{}).Create(&model.Admin{
+	if adminId := (&service.Admin{}).Create(&model.Admin{
 		Username: req.Username,
 		Nickname: req.Nickname,
 		Password: encrypt.Generate("123456"),
@@ -72,9 +74,7 @@ func (*Admin) Create(ctx *fiber.Ctx) error {
 		Phone:    req.Phone,
 		Avatar:   req.Avatar,
 		Status:   req.Status,
-	})
-
-	if adminId <= 0 {
+	}); adminId <= 0 {
 		return response.Error(ctx, "失败")
 	}
 
@@ -96,9 +96,11 @@ func (*Admin) Update(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
-	adminId := (&service.Admin{}).Update(&model.Admin{
+	if adminId := (&service.Admin{}).Update(&model.Admin{
 		Id:       req.Id,
 		Nickname: req.Nickname,
 		Gender:   req.Gender,
@@ -106,9 +108,7 @@ func (*Admin) Update(ctx *fiber.Ctx) error {
 		Phone:    req.Phone,
 		Avatar:   req.Avatar,
 		Status:   req.Status,
-	})
-
-	if adminId <= 0 {
+	}); adminId <= 0 {
 		return response.Error(ctx, "失败")
 	}
 
@@ -124,14 +124,15 @@ func (*Admin) Delete(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	err := (&service.Admin{}).Delete(req.Id)
-	if err != nil {
+	if err := (&service.Admin{}).Delete(req.Id); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -153,7 +154,9 @@ func (*Admin) Page(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	list, count := (&service.Admin{}).GetPage(page, size, req.Username, req.Nickname, req.Email, req.Phone)
 
@@ -232,7 +235,9 @@ func (*Admin) Login(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Username == "" || req.Password == "" {
 		return response.Error(ctx, "参数错误")
@@ -266,7 +271,9 @@ func (*Admin) ChangePassword(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Password == "" {
 		return response.Error(ctx, "参数错误")
@@ -274,11 +281,10 @@ func (*Admin) ChangePassword(ctx *fiber.Ctx) error {
 
 	id, _ := helper.GetTokenPayload(ctx)
 
-	adminId := (&service.Admin{}).Update(&model.Admin{
+	if adminId := (&service.Admin{}).Update(&model.Admin{
 		Id:       id,
 		Password: encrypt.Generate(req.Password),
-	})
-	if adminId <= 0 {
+	}); adminId <= 0 {
 		return response.Error(ctx, "失败")
 	}
 
@@ -295,14 +301,15 @@ func (*Admin) BindRole(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.AdminId <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	err := (&service.AdminRoleRelation{}).Bind(req.AdminId, req.RoleIds)
-	if err != nil {
+	if err := (&service.AdminRoleRelation{}).Bind(req.AdminId, req.RoleIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 

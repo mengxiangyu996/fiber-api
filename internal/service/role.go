@@ -10,26 +10,17 @@ type Role struct{}
 
 // 创建角色
 func (*Role) Create(role *model.Role) error {
-
-	err := db.GormClient.Model(&model.Role{}).Create(&role).Error
-
-	return err
+	return db.GormClient.Model(&model.Role{}).Create(&role).Error
 }
 
 // 更新角色
 func (*Role) Update(role *model.Role) error {
-
-	err := db.GormClient.Model(&model.Role{}).Where("id = ?", role.Id).Updates(&role).Error
-
-	return err
+	return db.GormClient.Model(&model.Role{}).Where("id = ?", role.Id).Updates(&role).Error
 }
 
 // 删除角色
 func (*Role) Delete(id int) error {
-
-	err := db.GormClient.Model(&model.Role{}).Where("id = ?", id).Delete(nil).Error
-
-	return err
+	return db.GormClient.Model(&model.Role{}).Where("id = ?", id).Delete(nil).Error
 }
 
 // 角色列表

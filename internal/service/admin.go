@@ -32,10 +32,7 @@ func (*Admin) Update(admin *model.Admin) int {
 
 // 删除管理员
 func (*Admin) Delete(id int) error {
-
-	err := db.GormClient.Model(&model.Admin{}).Where("id = ?", id).Delete(nil).Error
-
-	return err
+	return db.GormClient.Model(&model.Admin{}).Where("id = ?", id).Delete(nil).Error
 }
 
 // 管理员列表

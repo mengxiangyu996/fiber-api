@@ -21,7 +21,9 @@ func (*Role) Create(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Name == "" {
 		return response.Error(ctx, "参数错误")
@@ -32,11 +34,10 @@ func (*Role) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "角色已存在")
 	}
 
-	err := (&service.Role{}).Create(&model.Role{
+	if err := (&service.Role{}).Create(&model.Role{
 		Name:   req.Name,
 		Status: req.Status,
-	})
-	if err != nil {
+	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -54,7 +55,9 @@ func (*Role) Update(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Id <= 0 || req.Name == "" {
 		return response.Error(ctx, "参数错误")
@@ -65,12 +68,11 @@ func (*Role) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "角色已存在")
 	}
 
-	err := (&service.Role{}).Update(&model.Role{
+	if err := (&service.Role{}).Update(&model.Role{
 		Id:     req.Id,
 		Name:   req.Name,
 		Status: req.Status,
-	})
-	if err != nil {
+	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -86,14 +88,15 @@ func (*Role) Delete(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	err := (&service.Role{}).Delete(req.Id)
-	if err != nil {
+	if err := (&service.Role{}).Delete(req.Id); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -139,14 +142,15 @@ func (*Role) BindMenu(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.RoleId <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	err := (&service.RoleMenuRelation{}).Bind(req.RoleId, req.MenuIds)
-	if err != nil {
+	if err := (&service.RoleMenuRelation{}).Bind(req.RoleId, req.MenuIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -189,14 +193,15 @@ func (*Role) BindPermission(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.RoleId <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	err := (&service.RolePermissionRelation{}).Bind(req.RoleId, req.PermissionIds)
-	if err != nil {
+	if err := (&service.RolePermissionRelation{}).Bind(req.RoleId, req.PermissionIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 

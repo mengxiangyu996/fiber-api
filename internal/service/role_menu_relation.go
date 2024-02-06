@@ -15,8 +15,7 @@ func (*RoleMenuRelation) Bind(roleId int, menuIds []int) error {
 	tx := db.GormClient.Begin()
 
 	// 删除已绑定菜单
-	err := tx.Model(&model.RoleMenuRelation{}).Where("role_id = ?", roleId).Delete(nil).Error
-	if err != nil {
+	if err := tx.Model(&model.RoleMenuRelation{}).Where("role_id = ?", roleId).Delete(nil).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -24,11 +23,10 @@ func (*RoleMenuRelation) Bind(roleId int, menuIds []int) error {
 	if len(menuIds) > 0 {
 		// 重新绑定角色
 		for _, menuId := range menuIds {
-			err = tx.Model(&model.RoleMenuRelation{}).Create(&model.RoleMenuRelation{
+			if err := tx.Model(&model.RoleMenuRelation{}).Create(&model.RoleMenuRelation{
 				RoleId: roleId,
 				MenuId: menuId,
-			}).Error
-			if err != nil {
+			}).Error; err != nil {
 				tx.Rollback()
 				return err
 			}

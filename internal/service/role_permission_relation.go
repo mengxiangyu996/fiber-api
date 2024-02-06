@@ -15,8 +15,7 @@ func (*RolePermissionRelation) Bind(roleId int, permissionIds []int) error {
 	tx := db.GormClient.Begin()
 
 	// 删除已绑定权限
-	err := tx.Model(&model.RolePermissionRelation{}).Where("role_id = ?", roleId).Delete(nil).Error
-	if err != nil {
+	if err := tx.Model(&model.RolePermissionRelation{}).Where("role_id = ?", roleId).Delete(nil).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -24,11 +23,10 @@ func (*RolePermissionRelation) Bind(roleId int, permissionIds []int) error {
 	if len(permissionIds) > 0 {
 		// 重新绑定权限
 		for _, permissionId := range permissionIds {
-			err = tx.Model(&model.RolePermissionRelation{}).Create(&model.RolePermissionRelation{
+			if err := tx.Model(&model.RolePermissionRelation{}).Create(&model.RolePermissionRelation{
 				RoleId:       roleId,
 				PermissionId: permissionId,
-			}).Error
-			if err != nil {
+			}).Error; err != nil {
 				tx.Rollback()
 				return err
 			}

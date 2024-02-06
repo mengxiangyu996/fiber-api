@@ -24,7 +24,9 @@ func (*Permission) Create(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Path == "" || req.Method == "" {
 		return response.Error(ctx, "参数错误")
@@ -35,15 +37,13 @@ func (*Permission) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "权限已存在")
 	}
 
-	err := (&service.Permission{}).Create(&model.Permission{
+	if err := (&service.Permission{}).Create(&model.Permission{
 		Name:      req.Name,
 		GroupName: req.GroupName,
 		Path:      req.Path,
 		Method:    req.Method,
 		Status:    req.Status,
-	})
-
-	if err != nil {
+	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -64,7 +64,9 @@ func (*Permission) Update(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Id <= 0 || req.Path == "" || req.Method == "" {
 		return response.Error(ctx, "参数错误")
@@ -75,16 +77,14 @@ func (*Permission) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "权限已存在")
 	}
 
-	err := (&service.Permission{}).Update(&model.Permission{
+	if err := (&service.Permission{}).Update(&model.Permission{
 		Id:        req.Id,
 		Name:      req.Name,
 		GroupName: req.GroupName,
 		Path:      req.Path,
 		Method:    req.Method,
 		Status:    req.Status,
-	})
-
-	if err != nil {
+	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -100,14 +100,15 @@ func (*Permission) Delete(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	err := (&service.Permission{}).Delete(req.Id)
-	if err != nil {
+	if err := (&service.Permission{}).Delete(req.Id); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -129,7 +130,9 @@ func (*Permission) Page(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	list, count := (&service.Permission{}).GetPage(page, size, req.Name, req.GroupName, req.Path, req.Method)
 

@@ -10,26 +10,17 @@ type Permission struct{}
 
 // 创建权限
 func (*Permission) Create(permission *model.Permission) error {
-
-	err := db.GormClient.Model(&model.Permission{}).Create(&permission).Error
-
-	return err
+	return db.GormClient.Model(&model.Permission{}).Create(&permission).Error
 }
 
 // 更新权限
 func (*Permission) Update(permission *model.Permission) error {
-
-	err := db.GormClient.Model(&model.Permission{}).Where("id = ?", permission.Id).Updates(&permission).Error
-
-	return err
+	return db.GormClient.Model(&model.Permission{}).Where("id = ?", permission.Id).Updates(&permission).Error
 }
 
 // 删除权限
 func (*Permission) Delete(id int) error {
-
-	err := db.GormClient.Model(&model.Permission{}).Where("id = ?", id).Delete(nil).Error
-
-	return err
+	return db.GormClient.Model(&model.Permission{}).Where("id = ?", id).Delete(nil).Error
 }
 
 // 权限列表

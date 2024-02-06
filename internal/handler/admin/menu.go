@@ -28,13 +28,15 @@ func (*Menu) Create(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Name == "" || req.Type <= 0 || req.Path == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	err := (&service.Menu{}).Create(&model.Menu{
+	if err := (&service.Menu{}).Create(&model.Menu{
 		ParentId:  req.ParentId,
 		Name:      req.Name,
 		Type:      req.Type,
@@ -44,9 +46,7 @@ func (*Menu) Create(ctx *fiber.Ctx) error {
 		Icon:      req.Icon,
 		Redirect:  req.Redirect,
 		Status:    req.Status,
-	})
-
-	if err != nil {
+	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -71,13 +71,15 @@ func (*Menu) Update(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	err := (&service.Menu{}).Update(&model.Menu{
+	if err := (&service.Menu{}).Update(&model.Menu{
 		Id:        req.Id,
 		ParentId:  req.ParentId,
 		Name:      req.Name,
@@ -88,9 +90,7 @@ func (*Menu) Update(ctx *fiber.Ctx) error {
 		Icon:      req.Icon,
 		Redirect:  req.Redirect,
 		Status:    req.Status,
-	})
-
-	if err != nil {
+	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -106,7 +106,9 @@ func (*Menu) Delete(ctx *fiber.Ctx) error {
 
 	var req request
 
-	ctx.BodyParser(&req)
+	if err := ctx.BodyParser(&req); err != nil {
+		return response.Error(ctx, err.Error())
+	}
 
 	if req.Id <= 0 {
 		return response.Error(ctx, "参数错误")
@@ -117,8 +119,7 @@ func (*Menu) Delete(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "存在下级菜单")
 	}
 
-	err := (&service.Menu{}).Delete(req.Id)
-	if err != nil {
+	if err := (&service.Menu{}).Delete(req.Id); err != nil {
 		return response.Error(ctx, "失败")
 	}
 

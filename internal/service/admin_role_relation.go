@@ -15,8 +15,7 @@ func (*AdminRoleRelation) Bind(adminId int, roleIds []int) error {
 	tx := db.GormClient.Begin()
 
 	// 删除已绑定角色
-	err := tx.Model(&model.AdminRoleRelation{}).Where("admin_id = ?", adminId).Delete(nil).Error
-	if err != nil {
+	if err := tx.Model(&model.AdminRoleRelation{}).Where("admin_id = ?", adminId).Delete(nil).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -24,11 +23,10 @@ func (*AdminRoleRelation) Bind(adminId int, roleIds []int) error {
 	if len(roleIds) > 0 {
 		// 重新绑定角色
 		for _, roleId := range roleIds {
-			err = tx.Model(&model.AdminRoleRelation{}).Create(&model.AdminRoleRelation{
+			if err := tx.Model(&model.AdminRoleRelation{}).Create(&model.AdminRoleRelation{
 				AdminId: adminId,
 				RoleId:  roleId,
-			}).Error
-			if err != nil {
+			}).Error; err != nil {
 				tx.Rollback()
 				return err
 			}
