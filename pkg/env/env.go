@@ -17,8 +17,7 @@ func Get(key string, defaultValue interface{}) interface{} {
 
 	// 解析 JSON 内容到 map[string]interface{} 类型
 	var result map[string]interface{}
-	err = json.Unmarshal(data, &result)
-	if err != nil {
+	if err = json.Unmarshal(data, &result); err != nil {
 		return defaultValue
 	}
 

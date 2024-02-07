@@ -60,8 +60,7 @@ func SendRequest(requestParam *RequestParam) (string, error) {
 
 	// 读取响应体内容，并加入缓冲区
 	var buffer bytes.Buffer
-	_, err = io.Copy(&buffer, result.Body)
-	if err != nil {
+	if _, err = io.Copy(&buffer, result.Body); err != nil {
 		return "", err
 	}
 

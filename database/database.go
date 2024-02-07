@@ -15,8 +15,7 @@ var lock = "app.lock"
 // 初始化
 func Init() {
 
-	_, err := os.Stat(lock)
-	if err == nil {
+	if _, err := os.Stat(lock); err == nil {
 		return
 	}
 
@@ -31,15 +30,13 @@ func Init() {
 		if sql == "" {
 			continue
 		}
-		err := db.GormClient.Exec(sql).Error
-
-		if err != nil {
+		if err := db.GormClient.Exec(sql).Error; err != nil {
 			panic(err)
 		}
 	}
 
 	file, _ := os.Create(lock)
-	file.Close()
+	defer file.Close()
 
 	// 存在超级管理员不执行生成初始超级管理员
 	admin := (&service.Admin{}).GetDetailByUsername("admin")

@@ -70,8 +70,7 @@ func initGorm(dialector gorm.Dialector, opts gorm.Option) {
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	err = sqlDB.Ping()
-	if err != nil {
+	if err = sqlDB.Ping(); err != nil {
 		panic(err)
 	}
 
@@ -83,8 +82,7 @@ func initRedis(opts *redis.Options) {
 
 	RedisClient = redis.NewClient(opts)
 
-	_, err := RedisClient.Ping(context.Background()).Result()
-	if err != nil {
+	if _, err := RedisClient.Ping(context.Background()).Result(); err != nil {
 		panic(err)
 	}
 
