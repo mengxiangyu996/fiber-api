@@ -114,7 +114,7 @@ func (*Menu) Delete(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	list := (&service.Menu{}).GetChildrenList(req.Id, 0)
+	list := (&service.Menu{}).ChildrenList(req.Id, 0)
 	if len(list) > 0 {
 		return response.Error(ctx, "存在下级菜单")
 	}
@@ -129,7 +129,7 @@ func (*Menu) Delete(ctx *fiber.Ctx) error {
 // 菜单列表
 func (*Menu) Tree(ctx *fiber.Ctx) error {
 
-	tree := (&service.Menu{}).GetChildrenList(0, 0)
+	tree := (&service.Menu{}).ChildrenList(0, 0)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"tree": tree,
@@ -144,7 +144,7 @@ func (*Menu) Detail(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	menu := (&service.Menu{}).GetDetail(id)
+	menu := (&service.Menu{}).Detail(id)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"menu": menu,

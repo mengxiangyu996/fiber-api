@@ -76,3 +76,17 @@ create table if not exists `role_permission_relation` (
     `role_id` int(10) comment '角色id',
     `permission_id` int(10) comment '权限id'
 ) comment '角色权限关系表';
+
+create table if not exists `config` (
+    `id` int(10) auto_increment comment 'id' primary key,
+    `create_time` datetime comment '创建时间',
+    `update_time` datetime comment '更新时间',
+    `delete_time` datetime comment '删除时间',
+    `group_name` varchar(128) comment '组名',
+    `name` varchar(128) comment '配置名称',
+    `description` varchar(128) comment '配置描述',
+    `value` varchar(256) comment '配置值',
+    `remark` varchar(128) comment '备注',
+    `status` tinyint(3) default 1 comment '状态：1-启用；2-禁用'
+) comment '配置表';
+

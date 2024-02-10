@@ -29,7 +29,7 @@ func (*Role) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	role := (&service.Role{}).GetDetailByName(req.Name)
+	role := (&service.Role{}).DetailByName(req.Name)
 	if role.Id > 0 {
 		return response.Error(ctx, "角色已存在")
 	}
@@ -63,7 +63,7 @@ func (*Role) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	role := (&service.Role{}).GetDetailByName(req.Name)
+	role := (&service.Role{}).DetailByName(req.Name)
 	if role.Id > 0 && req.Id != role.Id {
 		return response.Error(ctx, "角色已存在")
 	}
@@ -109,7 +109,7 @@ func (*Role) Page(ctx *fiber.Ctx) error {
 	page := ctx.QueryInt("page", 1)
 	size := ctx.QueryInt("size", 10)
 
-	list, count := (&service.Role{}).GetPage(page, size)
+	list, count := (&service.Role{}).Page(page, size)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"list":  list,
@@ -125,7 +125,7 @@ func (*Role) Detail(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	role := (&service.Role{}).GetDetail(id)
+	role := (&service.Role{}).Detail(id)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"role": role,
@@ -167,15 +167,15 @@ func (*Role) Menus(ctx *fiber.Ctx) error {
 
 	var menuIds []int
 
-	roleMenus := (&service.RoleMenuRelation{}).GetList(roleId)
+	roleMenus := (&service.RoleMenuRelation{}).List(roleId)
 	if len(roleMenus) > 0 {
 		for _, roleMenu := range roleMenus {
 			menuIds = append(menuIds, roleMenu.MenuId)
 		}
 	}
 
-	tree := (&service.Menu{}).ListToTree((&service.Menu{}).GetListByIds(nil), 0)
-	bindTree := (&service.Menu{}).ListToTree((&service.Menu{}).GetListByIds(menuIds), 0)
+	tree := (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(nil), 0)
+	bindTree := (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(menuIds), 0)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"tree":     tree,
@@ -218,15 +218,15 @@ func (*Role) Permissions(ctx *fiber.Ctx) error {
 
 	var permissionIds []int
 
-	rolePermissions := (&service.RolePermissionRelation{}).GetList(roleId)
+	rolePermissions := (&service.RolePermissionRelation{}).List(roleId)
 	if len(rolePermissions) > 0 {
 		for _, rolePermission := range rolePermissions {
 			permissionIds = append(permissionIds, rolePermission.PermissionId)
 		}
 	}
 
-	tree := (&service.Permission{}).GetListByIds(nil)
-	bindTree := (&service.Permission{}).GetListByIds(permissionIds)
+	tree := (&service.Permission{}).ListByIds(nil)
+	bindTree := (&service.Permission{}).ListByIds(permissionIds)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"tree":     tree,

@@ -57,10 +57,10 @@ func (*Admin) Create(ctx *fiber.Ctx) error {
 	}
 
 	if req.Username == "" {
-		return response.Error(ctx, "缺少参数")
+		return response.Error(ctx, "参数错误")
 	}
 
-	admin := (&service.Admin{}).GetDetailByUsername(req.Username)
+	admin := (&service.Admin{}).DetailByUsername(req.Username)
 	if admin.Id > 0 {
 		return response.Error(ctx, "管理员已存在")
 	}
@@ -158,7 +158,7 @@ func (*Admin) Page(ctx *fiber.Ctx) error {
 		return response.Error(ctx, err.Error())
 	}
 
-	list, count := (&service.Admin{}).GetPage(page, size, req.Username, req.Nickname, req.Email, req.Phone)
+	list, count := (&service.Admin{}).Page(page, size, req.Username, req.Nickname, req.Email, req.Phone)
 
 	// 清除密码
 	for _, item := range list {
@@ -182,7 +182,7 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 
 	var adminResult AdminResult
 
-	admin := (&service.Admin{}).GetDetail(id)
+	admin := (&service.Admin{}).Detail(id)
 	if admin.Id > 0 {
 		adminResult.Id = admin.Id
 		adminResult.CreateTime = admin.CreateTime
@@ -195,10 +195,10 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 		adminResult.Avatar = admin.Avatar
 		adminResult.Status = admin.Status
 		// 管理员权限
-		adminRoles := (&service.AdminRoleRelation{}).GetList(admin.Id)
+		adminRoles := (&service.AdminRoleRelation{}).List(admin.Id)
 		if len(adminRoles) > 0 {
 			for _, adminRole := range adminRoles {
-				role := (&service.Role{}).GetDetail(adminRole.RoleId)
+				role := (&service.Role{}).Detail(adminRole.RoleId)
 				if role.Status != 1 {
 					continue
 				}
@@ -207,7 +207,7 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 					Name: role.Name,
 				})
 				// 角色绑定的菜单
-				roleMenus := (&service.RoleMenuRelation{}).GetList(role.Id)
+				roleMenus := (&service.RoleMenuRelation{}).List(role.Id)
 				if len(roleMenus) <= 0 {
 					continue
 				}
@@ -215,7 +215,7 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 				for _, roleMenu := range roleMenus {
 					menuIds = append(menuIds, roleMenu.MenuId)
 				}
-				adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).GetListByIds(menuIds), 0)
+				adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(menuIds), 0)
 			}
 		}
 	}
@@ -243,7 +243,7 @@ func (*Admin) Login(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	admin := (&service.Admin{}).GetDetailByUsername(req.Username)
+	admin := (&service.Admin{}).DetailByUsername(req.Username)
 	if admin.Id <= 0 {
 		return response.Error(ctx, "账号不存在")
 	}

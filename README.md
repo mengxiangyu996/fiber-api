@@ -24,4 +24,4 @@ go run main.go
 ```
 
 ### API文档
-[API文档](https://github.com/ZeroMxy/breeze-api/blob/main/document/api.md)
+[API文档](http://htmlpreview.github.io/?https://github.com/ZeroMxy/breeze-api/blob/main/web/init-api.html)

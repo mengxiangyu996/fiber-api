@@ -32,7 +32,7 @@ func (*Permission) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	permission := (&service.Permission{}).GetDetailByPathWithMethod(req.Path, req.Method)
+	permission := (&service.Permission{}).DetailByPathWithMethod(req.Path, req.Method)
 	if permission.Id > 0 {
 		return response.Error(ctx, "权限已存在")
 	}
@@ -72,7 +72,7 @@ func (*Permission) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	permission := (&service.Permission{}).GetDetailByPathWithMethod(req.Path, req.Method)
+	permission := (&service.Permission{}).DetailByPathWithMethod(req.Path, req.Method)
 	if permission.Id > 0 && permission.Id != req.Id {
 		return response.Error(ctx, "权限已存在")
 	}
@@ -134,7 +134,7 @@ func (*Permission) Page(ctx *fiber.Ctx) error {
 		return response.Error(ctx, err.Error())
 	}
 
-	list, count := (&service.Permission{}).GetPage(page, size, req.Name, req.GroupName, req.Path, req.Method)
+	list, count := (&service.Permission{}).Page(page, size, req.Name, req.GroupName, req.Path, req.Method)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"list":  list,
@@ -150,7 +150,7 @@ func (*Permission) Detail(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	permission := (&service.Permission{}).GetDetail(id)
+	permission := (&service.Permission{}).Detail(id)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"permission": permission,

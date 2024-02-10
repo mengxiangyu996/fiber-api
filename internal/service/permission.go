@@ -24,7 +24,7 @@ func (*Permission) Delete(id int) error {
 }
 
 // 权限列表
-func (*Permission) GetPage(page, size int, name, groupName, path, method string) ([]*model.Permission, int) {
+func (*Permission) Page(page, size int, name, groupName, path, method string) ([]*model.Permission, int) {
 
 	var (
 		list  []*model.Permission
@@ -55,7 +55,7 @@ func (*Permission) GetPage(page, size int, name, groupName, path, method string)
 }
 
 // 获取权限列表
-func (*Permission) GetListByIds(ids []int) []*model.Permission {
+func (*Permission) ListByIds(ids []int) []*model.Permission {
 
 	var list []*model.Permission
 
@@ -71,7 +71,7 @@ func (*Permission) GetListByIds(ids []int) []*model.Permission {
 }
 
 // 权限详情
-func (*Permission) GetDetail(id int) *model.Permission {
+func (*Permission) Detail(id int) *model.Permission {
 
 	var detail *model.Permission
 
@@ -81,7 +81,7 @@ func (*Permission) GetDetail(id int) *model.Permission {
 }
 
 // 权限详情
-func (*Permission) GetDetailByPathWithMethod(path, method string) *model.Permission {
+func (*Permission) DetailByPathWithMethod(path, method string) *model.Permission {
 
 	var detail *model.Permission
 

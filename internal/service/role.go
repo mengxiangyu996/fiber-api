@@ -24,7 +24,7 @@ func (*Role) Delete(id int) error {
 }
 
 // 角色列表
-func (*Role) GetPage(page, size int) ([]*model.Role, int) {
+func (*Role) Page(page, size int) ([]*model.Role, int) {
 
 	var (
 		list []*model.Role
@@ -37,7 +37,7 @@ func (*Role) GetPage(page, size int) ([]*model.Role, int) {
 }
 
 // 角色详情
-func (*Role) GetDetail(id int) *model.Role {
+func (*Role) Detail(id int) *model.Role {
 
 	var detail *model.Role
 
@@ -47,7 +47,7 @@ func (*Role) GetDetail(id int) *model.Role {
 }
 
 // 角色详情
-func (*Role) GetDetailByName(name string) *model.Role {
+func (*Role) DetailByName(name string) *model.Role {
 
 	var detail *model.Role
 

@@ -39,7 +39,7 @@ func Init() {
 	defer file.Close()
 
 	// 存在超级管理员不执行生成初始超级管理员
-	admin := (&service.Admin{}).GetDetailByUsername("admin")
+	admin := (&service.Admin{}).DetailByUsername("admin")
 	if admin.Id > 0 {
 		return 
 	}

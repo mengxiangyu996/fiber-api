@@ -39,7 +39,7 @@ func (*AdminRoleRelation) Bind(adminId int, roleIds []int) error {
 }
 
 // 绑定角色列表
-func (*AdminRoleRelation) GetList(adminId int) []*model.AdminRoleRelation {
+func (*AdminRoleRelation) List(adminId int) []*model.AdminRoleRelation {
 
 	var list []*model.AdminRoleRelation
 

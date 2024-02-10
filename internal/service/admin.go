@@ -11,8 +11,7 @@ type Admin struct{}
 // 创建管理员
 func (*Admin) Create(admin *model.Admin) int {
 
-	err := db.GormClient.Model(&model.Admin{}).Create(&admin).Error
-	if err != nil {
+	if err := db.GormClient.Model(&model.Admin{}).Create(&admin).Error; err != nil {
 		return 0
 	}
 
@@ -22,8 +21,7 @@ func (*Admin) Create(admin *model.Admin) int {
 // 更新管理员
 func (*Admin) Update(admin *model.Admin) int {
 
-	err := db.GormClient.Model(&model.Admin{}).Where("id = ?", admin.Id).Updates(&admin).Error
-	if err != nil {
+	if err := db.GormClient.Model(&model.Admin{}).Where("id = ?", admin.Id).Updates(&admin).Error; err != nil {
 		return 0
 	}
 
@@ -36,7 +34,7 @@ func (*Admin) Delete(id int) error {
 }
 
 // 管理员列表
-func (*Admin) GetPage(page, size int, username, nickname, email, phone string) ([]*model.Admin, int) {
+func (*Admin) Page(page, size int, username, nickname, email, phone string) ([]*model.Admin, int) {
 
 	var (
 		list  []*model.Admin
@@ -67,7 +65,7 @@ func (*Admin) GetPage(page, size int, username, nickname, email, phone string) (
 }
 
 // 管理员详情
-func (*Admin) GetDetail(id int) *model.Admin {
+func (*Admin) Detail(id int) *model.Admin {
 
 	var detail *model.Admin
 
@@ -77,7 +75,7 @@ func (*Admin) GetDetail(id int) *model.Admin {
 }
 
 // 管理员详情
-func (*Admin) GetDetailByUsername(username string) *model.Admin {
+func (*Admin) DetailByUsername(username string) *model.Admin {
 
 	var detail *model.Admin
 

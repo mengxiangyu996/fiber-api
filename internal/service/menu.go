@@ -40,7 +40,7 @@ func (*Menu) Delete(id int) error {
 }
 
 // 获取下级菜单
-func (t *Menu) GetChildrenList(id, status int) []*MenuTree {
+func (t *Menu) ChildrenList(id, status int) []*MenuTree {
 
 	var (
 		list []*Menu
@@ -57,7 +57,7 @@ func (t *Menu) GetChildrenList(id, status int) []*MenuTree {
 			Menu: item,
 		}
 		// 递归获取子菜单树
-		child.Children = t.GetChildrenList(item.Id, status)
+		child.Children = t.ChildrenList(item.Id, status)
 		tree = append(tree, child)
 	}
 
@@ -65,7 +65,7 @@ func (t *Menu) GetChildrenList(id, status int) []*MenuTree {
 }
 
 // 获取菜单列表
-func (*Menu) GetListByIds(ids []int) []*Menu {
+func (*Menu) ListByIds(ids []int) []*Menu {
 
 	var list []*Menu
 
@@ -81,7 +81,7 @@ func (*Menu) GetListByIds(ids []int) []*Menu {
 }
 
 // 菜单详情
-func (*Menu) GetDetail(id int) *model.Menu {
+func (*Menu) Detail(id int) *model.Menu {
 
 	var detail *model.Menu
 

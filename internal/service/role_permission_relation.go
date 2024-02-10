@@ -39,7 +39,7 @@ func (*RolePermissionRelation) Bind(roleId int, permissionIds []int) error {
 }
 
 // 绑定权限列表
-func (*RolePermissionRelation) GetList(roleId int) []*model.RolePermissionRelation {
+func (*RolePermissionRelation) List(roleId int) []*model.RolePermissionRelation {
 
 	var list []*model.RolePermissionRelation
 
@@ -49,7 +49,7 @@ func (*RolePermissionRelation) GetList(roleId int) []*model.RolePermissionRelati
 }
 
 // 权限绑定详情
-func (*RolePermissionRelation) GetDetailByRoleIdWithPermissionId(roleId, permissionId int) *model.RolePermissionRelation {
+func (*RolePermissionRelation) DetailByRoleIdWithPermissionId(roleId, permissionId int) *model.RolePermissionRelation {
 
 	var detail *model.RolePermissionRelation
 

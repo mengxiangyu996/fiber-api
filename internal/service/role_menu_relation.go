@@ -39,7 +39,7 @@ func (*RoleMenuRelation) Bind(roleId int, menuIds []int) error {
 }
 
 // 绑定菜单列表
-func (*RoleMenuRelation) GetList(roleId int) []*model.RoleMenuRelation {
+func (*RoleMenuRelation) List(roleId int) []*model.RoleMenuRelation {
 
 	var list []*model.RoleMenuRelation
 
