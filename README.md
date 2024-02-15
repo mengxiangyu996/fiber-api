@@ -24,4 +24,4 @@ go run main.go
 ```
 
 ### API文档
-[服务启动后点击查看api文档](http://localhost:3000/init-api.html)
+[点击查看api文档](https://remarkable-syrniki-4bca7b.netlify.app/)
