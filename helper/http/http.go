@@ -19,6 +19,7 @@ type RequestParam struct {
 	Query   map[string]interface{}
 	Json    map[string]interface{}
 	Form    map[string]interface{}
+	Body	string
 	Context context.Context
 }
 
@@ -121,6 +122,11 @@ func postRequest(requestParam *RequestParam) (*http.Request, error) {
 			formData.Add(key, fmt.Sprint(value))
 		}
 		body = strings.NewReader(formData.Encode())
+	}
+
+	// Body 传参
+	if requestParam.Body != "" {
+		body = strings.NewReader(requestParam.Body)
 	}
 
 	return http.NewRequest("POST", requestParam.Url, body)
