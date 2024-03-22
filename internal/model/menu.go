@@ -20,5 +20,5 @@ type Menu struct {
 	Component  string         `json:"component"`
 	Icon       string         `json:"icon"`
 	Redirect   string         `json:"redirect"`
-	Status     string         `json:"status" gorm:"default:1"`
+	Status     int         	  `json:"status" gorm:"default:1"`
 }
