@@ -24,4 +24,4 @@ go run main.go
 ```
 
 ### API文档
-[点击查看api文档](https://remarkable-syrniki-4bca7b.netlify.app/)
+[点击查看api文档](https://melodious-centaur-e00019.netlify.app/)
