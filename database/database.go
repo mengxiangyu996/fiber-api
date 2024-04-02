@@ -2,7 +2,6 @@ package database
 
 import (
 	"breeze-api/helper/encrypt"
-	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/db"
 	"io/ioutil"
@@ -41,13 +40,13 @@ func Init() {
 	// 存在超级管理员不执行生成初始超级管理员
 	admin := (&service.Admin{}).DetailByUsername("admin")
 	if admin.Id > 0 {
-		return 
+		return
 	}
 	// 生成初始超级管理员
-	(&service.Admin{}).Create(&model.Admin{
+	(&service.Admin{}).Create(&service.Admin{
 		Username: "admin",
 		Nickname: "超级管理员",
-		Gender: 1,
+		Gender:   1,
 		Password: encrypt.Generate("123456"),
 	})
 

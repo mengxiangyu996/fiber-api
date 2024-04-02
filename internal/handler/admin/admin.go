@@ -4,7 +4,6 @@ import (
 	"breeze-api/helper"
 	"breeze-api/helper/encrypt"
 	"breeze-api/helper/jwt"
-	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/response"
 	"time"
@@ -17,18 +16,16 @@ type Admin struct{}
 
 // 管理员详情返回
 type AdminResult struct {
-	Id         int                 `json:"id"`
-	CreateTime time.Time           `json:"createTime"`
-	UpdateTime time.Time           `json:"updateTime"`
-	Username   string              `json:"username"`
-	Nickname   string              `json:"nickname"`
-	Gender     int                 `json:"gender"`
-	Email      string              `json:"email"`
-	Phone      string              `json:"phone"`
-	Avatar     string              `json:"avatar"`
-	Status     int                 `json:"status"`
-	Roles      []*AdminRole        `json:"roles"`
-	Menus      []*service.MenuTree `json:"menus"`
+	Id       int                 `json:"id"`
+	Username string              `json:"username"`
+	Nickname string              `json:"nickname"`
+	Gender   int                 `json:"gender"`
+	Email    string              `json:"email"`
+	Phone    string              `json:"phone"`
+	Avatar   string              `json:"avatar"`
+	Status   int                 `json:"status"`
+	Roles    []*AdminRole        `json:"roles"`
+	Menus    []*service.MenuTree `json:"menus"`
 }
 
 // 管理员绑定的角色
@@ -65,7 +62,7 @@ func (*Admin) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "管理员已存在")
 	}
 
-	if adminId := (&service.Admin{}).Create(&model.Admin{
+	if adminId := (&service.Admin{}).Create(&service.Admin{
 		Username: req.Username,
 		Nickname: req.Nickname,
 		Password: encrypt.Generate("123456"),
@@ -100,7 +97,7 @@ func (*Admin) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, err.Error())
 	}
 
-	if adminId := (&service.Admin{}).Update(&model.Admin{
+	if adminId := (&service.Admin{}).Update(&service.Admin{
 		Id:       req.Id,
 		Nickname: req.Nickname,
 		Gender:   req.Gender,
@@ -185,8 +182,6 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 	admin := (&service.Admin{}).Detail(id)
 	if admin.Id > 0 {
 		adminResult.Id = admin.Id
-		adminResult.CreateTime = admin.CreateTime
-		adminResult.UpdateTime = admin.UpdateTime
 		adminResult.Username = admin.Username
 		adminResult.Nickname = admin.Nickname
 		adminResult.Gender = admin.Gender
@@ -195,7 +190,7 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 		adminResult.Avatar = admin.Avatar
 		adminResult.Status = admin.Status
 		// 管理员权限
-		adminRoles := (&service.AdminRoleRelation{}).List(admin.Id)
+		adminRoles := (&service.AdminRole{}).List(admin.Id)
 		if len(adminRoles) > 0 {
 			for _, adminRole := range adminRoles {
 				role := (&service.Role{}).Detail(adminRole.RoleId)
@@ -207,7 +202,7 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 					Name: role.Name,
 				})
 				// 角色绑定的菜单
-				roleMenus := (&service.RoleMenuRelation{}).List(role.Id)
+				roleMenus := (&service.RoleMenu{}).List(role.Id)
 				if len(roleMenus) <= 0 {
 					continue
 				}
@@ -281,7 +276,7 @@ func (*Admin) ChangePassword(ctx *fiber.Ctx) error {
 
 	id, _ := helper.GetTokenPayload(ctx)
 
-	if adminId := (&service.Admin{}).Update(&model.Admin{
+	if adminId := (&service.Admin{}).Update(&service.Admin{
 		Id:       id,
 		Password: encrypt.Generate(req.Password),
 	}); adminId <= 0 {
@@ -309,7 +304,7 @@ func (*Admin) BindRole(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.AdminRoleRelation{}).Bind(req.AdminId, req.RoleIds); err != nil {
+	if err := (&service.AdminRole{}).Bind(req.AdminId, req.RoleIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 

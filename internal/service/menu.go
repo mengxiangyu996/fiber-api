@@ -16,7 +16,7 @@ type Menu struct {
 	Component string `json:"component"`
 	Icon      string `json:"icon"`
 	Redirect  string `json:"redirect"`
-	Status    string `json:"status"`
+	Status    int    `json:"status"`
 }
 
 type MenuTree struct {
@@ -25,12 +25,12 @@ type MenuTree struct {
 }
 
 // 创建菜单
-func (*Menu) Create(menu *model.Menu) error {
+func (*Menu) Create(menu *Menu) error {
 	return db.GormClient.Model(&model.Menu{}).Create(&menu).Error
 }
 
 // 更新菜单
-func (*Menu) Update(menu *model.Menu) error {
+func (*Menu) Update(menu *Menu) error {
 	return db.GormClient.Model(&model.Menu{}).Where("id = ?", menu.Id).Updates(&menu).Error
 }
 
@@ -81,9 +81,9 @@ func (*Menu) ListByIds(ids []int) []*Menu {
 }
 
 // 菜单详情
-func (*Menu) Detail(id int) *model.Menu {
+func (*Menu) Detail(id int) *Menu {
 
-	var detail *model.Menu
+	var detail *Menu
 
 	db.GormClient.Model(&model.Menu{}).Where("id = ?", id).Take(&detail)
 

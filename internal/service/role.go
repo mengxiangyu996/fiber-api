@@ -6,15 +6,19 @@ import (
 )
 
 // 角色数据服务
-type Role struct{}
+type Role struct {
+	Id     int    `json:"id"`
+	Name   string `json:"name"`
+	Status int    `json:"status"`
+}
 
 // 创建角色
-func (*Role) Create(role *model.Role) error {
+func (*Role) Create(role *Role) error {
 	return db.GormClient.Model(&model.Role{}).Create(&role).Error
 }
 
 // 更新角色
-func (*Role) Update(role *model.Role) error {
+func (*Role) Update(role *Role) error {
 	return db.GormClient.Model(&model.Role{}).Where("id = ?", role.Id).Updates(&role).Error
 }
 
@@ -24,10 +28,10 @@ func (*Role) Delete(id int) error {
 }
 
 // 角色列表
-func (*Role) Page(page, size int) ([]*model.Role, int) {
+func (*Role) Page(page, size int) ([]*Role, int) {
 
 	var (
-		list []*model.Role
+		list  []*Role
 		count int64
 	)
 
@@ -37,9 +41,9 @@ func (*Role) Page(page, size int) ([]*model.Role, int) {
 }
 
 // 角色详情
-func (*Role) Detail(id int) *model.Role {
+func (*Role) Detail(id int) *Role {
 
-	var detail *model.Role
+	var detail *Role
 
 	db.GormClient.Model(&model.Role{}).Where("id = ?", id).Take(&detail)
 
@@ -47,9 +51,9 @@ func (*Role) Detail(id int) *model.Role {
 }
 
 // 角色详情
-func (*Role) DetailByName(name string) *model.Role {
+func (*Role) DetailByName(name string) *Role {
 
-	var detail *model.Role
+	var detail *Role
 
 	db.GormClient.Model(&model.Role{}).Where("name = ?", name).Take(&detail)
 

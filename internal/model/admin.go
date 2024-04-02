@@ -8,16 +8,16 @@ import (
 
 // 管理员模型
 type Admin struct {
-	Id         int            `json:"id" gorm:"autoIncrement"`
-	CreateTime time.Time      `json:"createTime" gorm:"autoCreateTime"`
-	UpdateTime time.Time      `json:"updateTime" gorm:"autoUpdateTime"`
-	DeleteTime gorm.DeletedAt `json:"deleteTime"`
-	Username   string         `json:"username"`
-	Nickname   string         `json:"nickname"`
-	Gender     int            `json:"gender"`
-	Email      string         `json:"email"`
-	Phone      string         `json:"phone"`
-	Password   string         `json:"password"`
-	Avatar     string         `json:"avatar"`
-	Status     int            `json:"status" gorm:"default:1"`
+	Id         int       `gorm:"autoIncrement"`
+	CreateTime time.Time `gorm:"autoCreateTime"`
+	UpdateTime time.Time `gorm:"autoUpdateTime"`
+	DeleteTime gorm.DeletedAt
+	Username   string
+	Nickname   string
+	Gender     int
+	Email      string
+	Phone      string
+	Password   string
+	Avatar     string
+	Status     int `gorm:"default:1"`
 }

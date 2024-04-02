@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/response"
 
@@ -23,7 +22,7 @@ func (*Menu) Create(ctx *fiber.Ctx) error {
 		Component string `json:"component"`
 		Icon      string `json:"icon"`
 		Redirect  string `json:"redirect"`
-		Status    string `json:"status"`
+		Status    int    `json:"status"`
 	}
 
 	var req request
@@ -36,7 +35,7 @@ func (*Menu) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.Menu{}).Create(&model.Menu{
+	if err := (&service.Menu{}).Create(&service.Menu{
 		ParentId:  req.ParentId,
 		Name:      req.Name,
 		Type:      req.Type,
@@ -66,7 +65,7 @@ func (*Menu) Update(ctx *fiber.Ctx) error {
 		Component string `json:"component"`
 		Icon      string `json:"icon"`
 		Redirect  string `json:"redirect"`
-		Status    string `json:"status"`
+		Status    int    `json:"status"`
 	}
 
 	var req request
@@ -79,7 +78,7 @@ func (*Menu) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.Menu{}).Update(&model.Menu{
+	if err := (&service.Menu{}).Update(&service.Menu{
 		Id:        req.Id,
 		ParentId:  req.ParentId,
 		Name:      req.Name,

@@ -6,16 +6,20 @@ import (
 )
 
 // 管理员角色关系数据服务
-type AdminRoleRelation struct{}
+type AdminRole struct {
+	Id      int `json:"id"`
+	AdminId int `json:"adminId"`
+	RoleId  int `json:"roleId"`
+}
 
 // 绑定角色
-func (*AdminRoleRelation) Bind(adminId int, roleIds []int) error {
+func (*AdminRole) Bind(adminId int, roleIds []int) error {
 
 	// 开启事务
 	tx := db.GormClient.Begin()
 
 	// 删除已绑定角色
-	if err := tx.Model(&model.AdminRoleRelation{}).Where("admin_id = ?", adminId).Delete(nil).Error; err != nil {
+	if err := tx.Model(&model.AdminRole{}).Where("admin_id = ?", adminId).Delete(nil).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -23,7 +27,7 @@ func (*AdminRoleRelation) Bind(adminId int, roleIds []int) error {
 	if len(roleIds) > 0 {
 		// 重新绑定角色
 		for _, roleId := range roleIds {
-			if err := tx.Model(&model.AdminRoleRelation{}).Create(&model.AdminRoleRelation{
+			if err := tx.Model(&model.AdminRole{}).Create(&model.AdminRole{
 				AdminId: adminId,
 				RoleId:  roleId,
 			}).Error; err != nil {
@@ -39,11 +43,11 @@ func (*AdminRoleRelation) Bind(adminId int, roleIds []int) error {
 }
 
 // 绑定角色列表
-func (*AdminRoleRelation) List(adminId int) []*model.AdminRoleRelation {
+func (*AdminRole) List(adminId int) []*AdminRole {
 
-	var list []*model.AdminRoleRelation
+	var list []*AdminRole
 
-	db.GormClient.Model(&model.AdminRoleRelation{}).Where("admin_id = ?", adminId).Find(&list)
+	db.GormClient.Model(&model.AdminRole{}).Where("admin_id = ?", adminId).Find(&list)
 
 	return list
 }

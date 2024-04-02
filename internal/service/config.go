@@ -6,15 +6,23 @@ import (
 )
 
 // 配置数据服务
-type Config struct{}
+type Config struct {
+	Id          int    `json:"id"`
+	GroupName   string `json:"groupName"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Value       string `json:"value"`
+	Remark      string `json:"remark"`
+	Status      int    `json:"status"`
+}
 
 // 创建配置
-func (*Config) Create(config *model.Config) error {
+func (*Config) Create(config *Config) error {
 	return db.GormClient.Model(&model.Config{}).Create(&config).Error
 }
 
 // 更新配置
-func (*Config) Update(config *model.Config) error {
+func (*Config) Update(config *Config) error {
 	return db.GormClient.Model(&model.Config{}).Where("id = ?", config.Id).Updates(&config).Error
 }
 
@@ -24,17 +32,17 @@ func (*Config) Delete(id int) error {
 }
 
 // 配置列表
-func (*Config) Tab() map[string][]*model.Config {
+func (*Config) Tab() map[string][]*Config {
 
 	var (
 		groupName []string
-		list      = make(map[string][]*model.Config, 0)
+		list      = make(map[string][]*Config, 0)
 	)
 
 	db.GormClient.Model(&model.Config{}).Group("group_name").Pluck("group_name", &groupName)
 
 	for _, item := range groupName {
-		var configs []*model.Config
+		var configs []*Config
 		db.GormClient.Model(&model.Config{}).Where("group_name = ?", item).Find(&configs)
 		list[item] = configs
 	}
@@ -43,9 +51,9 @@ func (*Config) Tab() map[string][]*model.Config {
 }
 
 // 配置详情
-func (*Config) Detail(id int) *model.Config {
+func (*Config) Detail(id int) *Config {
 
-	var detail *model.Config
+	var detail *Config
 
 	db.GormClient.Model(&model.Config{}).Where("id = ?", id).Take(&detail)
 
@@ -53,9 +61,9 @@ func (*Config) Detail(id int) *model.Config {
 }
 
 // 配置详情
-func (*Config) DetailByName(name string) *model.Config {
+func (*Config) DetailByName(name string) *Config {
 
-	var detail *model.Config
+	var detail *Config
 
 	db.GormClient.Model(&model.Config{}).Where("name = ?", name).Take(&detail)
 

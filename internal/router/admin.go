@@ -56,7 +56,7 @@ func AdminRouter(app *fiber.App) {
 		// 配置操作
 		authApi.Post("config/create", (&admin.Config{}).Create) // 创建配置
 		authApi.Post("config/update", (&admin.Config{}).Update) // 更新配置
-		authApi.Post("config/delete", (&admin.Config{}).Delete) // 删除胚子
+		authApi.Post("config/delete", (&admin.Config{}).Delete) // 删除配置
 		authApi.Get("config/tab", (&admin.Config{}).Tab)        // 配置列表
 		authApi.Get("config/detail", (&admin.Config{}).Detail)  // 配置详情
 	}

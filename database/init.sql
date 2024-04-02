@@ -50,7 +50,7 @@ create table if not exists `permission` (
     `status` tinyint(3) default 1 comment '状态：1-启用；2-禁用'
 ) comment '权限表';
 
-create table if not exists `admin_role_relation` (
+create table if not exists `admin_role` (
     `id` int(10) auto_increment comment 'id' primary key,
     `create_time` datetime comment '创建时间',
     `update_time` datetime comment '更新时间',
@@ -59,7 +59,7 @@ create table if not exists `admin_role_relation` (
     `role_id` int(10) comment '角色id'
 ) comment '用户角色关系表';
 
-create table if not exists `role_menu_relation` (
+create table if not exists `role_menu` (
     `id` int(10) auto_increment comment 'id' primary key,
     `create_time` datetime comment '创建时间',
     `update_time` datetime comment '更新时间',
@@ -68,7 +68,7 @@ create table if not exists `role_menu_relation` (
     `menu_id` int(10) comment '菜单id'
 ) comment '角色菜单关系表';
 
-create table if not exists `role_permission_relation` (
+create table if not exists `role_permission` (
     `id` int(10) auto_increment comment 'id' primary key,
     `create_time` datetime comment '创建时间',
     `update_time` datetime comment '更新时间',

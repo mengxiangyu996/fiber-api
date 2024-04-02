@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/response"
 
@@ -34,7 +33,7 @@ func (*Role) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "角色已存在")
 	}
 
-	if err := (&service.Role{}).Create(&model.Role{
+	if err := (&service.Role{}).Create(&service.Role{
 		Name:   req.Name,
 		Status: req.Status,
 	}); err != nil {
@@ -68,7 +67,7 @@ func (*Role) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "角色已存在")
 	}
 
-	if err := (&service.Role{}).Update(&model.Role{
+	if err := (&service.Role{}).Update(&service.Role{
 		Id:     req.Id,
 		Name:   req.Name,
 		Status: req.Status,
@@ -150,7 +149,7 @@ func (*Role) BindMenu(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.RoleMenuRelation{}).Bind(req.RoleId, req.MenuIds); err != nil {
+	if err := (&service.RoleMenu{}).Bind(req.RoleId, req.MenuIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -167,7 +166,7 @@ func (*Role) Menus(ctx *fiber.Ctx) error {
 
 	var menuIds []int
 
-	roleMenus := (&service.RoleMenuRelation{}).List(roleId)
+	roleMenus := (&service.RoleMenu{}).List(roleId)
 	if len(roleMenus) > 0 {
 		for _, roleMenu := range roleMenus {
 			menuIds = append(menuIds, roleMenu.MenuId)
@@ -201,7 +200,7 @@ func (*Role) BindPermission(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.RolePermissionRelation{}).Bind(req.RoleId, req.PermissionIds); err != nil {
+	if err := (&service.RolePermission{}).Bind(req.RoleId, req.PermissionIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -218,7 +217,7 @@ func (*Role) Permissions(ctx *fiber.Ctx) error {
 
 	var permissionIds []int
 
-	rolePermissions := (&service.RolePermissionRelation{}).List(roleId)
+	rolePermissions := (&service.RolePermission{}).List(roleId)
 	if len(rolePermissions) > 0 {
 		for _, rolePermission := range rolePermissions {
 			permissionIds = append(permissionIds, rolePermission.PermissionId)

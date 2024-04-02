@@ -6,15 +6,12 @@ import (
 	"gorm.io/gorm"
 )
 
-// 权限模型
-type Permission struct {
+// 管理员角色关系模型
+type AdminRole struct {
 	Id         int       `gorm:"autoIncrement"`
 	CreateTime time.Time `gorm:"autoCreateTime"`
 	UpdateTime time.Time `gorm:"autoUpdateTime"`
 	DeleteTime gorm.DeletedAt
-	Name       string
-	GroupName  string
-	Path       string
-	Method     string
-	Status     int `grom:"default:1"`
+	AdminId    int
+	RoleId     int
 }

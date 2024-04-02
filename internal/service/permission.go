@@ -6,15 +6,22 @@ import (
 )
 
 // 权限数据服务
-type Permission struct{}
+type Permission struct {
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	GroupName string `json:"groupName"`
+	Path      string `json:"path"`
+	Method    string `json:"method"`
+	Status    int    `json:"status"`
+}
 
 // 创建权限
-func (*Permission) Create(permission *model.Permission) error {
+func (*Permission) Create(permission *Permission) error {
 	return db.GormClient.Model(&model.Permission{}).Create(&permission).Error
 }
 
 // 更新权限
-func (*Permission) Update(permission *model.Permission) error {
+func (*Permission) Update(permission *Permission) error {
 	return db.GormClient.Model(&model.Permission{}).Where("id = ?", permission.Id).Updates(&permission).Error
 }
 
@@ -24,10 +31,10 @@ func (*Permission) Delete(id int) error {
 }
 
 // 权限列表
-func (*Permission) Page(page, size int, name, groupName, path, method string) ([]*model.Permission, int) {
+func (*Permission) Page(page, size int, name, groupName, path, method string) ([]*Permission, int) {
 
 	var (
-		list  []*model.Permission
+		list  []*Permission
 		count int64
 	)
 
@@ -55,9 +62,9 @@ func (*Permission) Page(page, size int, name, groupName, path, method string) ([
 }
 
 // 获取权限列表
-func (*Permission) ListByIds(ids []int) []*model.Permission {
+func (*Permission) ListByIds(ids []int) []*Permission {
 
-	var list []*model.Permission
+	var list []*Permission
 
 	query := db.GormClient.Model(&model.Permission{}).Where("status = ?", 1)
 
@@ -71,9 +78,9 @@ func (*Permission) ListByIds(ids []int) []*model.Permission {
 }
 
 // 权限详情
-func (*Permission) Detail(id int) *model.Permission {
+func (*Permission) Detail(id int) *Permission {
 
-	var detail *model.Permission
+	var detail *Permission
 
 	db.GormClient.Model(&model.Permission{}).Where("id = ?", id).Take(&detail)
 
@@ -81,9 +88,9 @@ func (*Permission) Detail(id int) *model.Permission {
 }
 
 // 权限详情
-func (*Permission) DetailByPathWithMethod(path, method string) *model.Permission {
+func (*Permission) DetailByPathWithMethod(path, method string) *Permission {
 
-	var detail *model.Permission
+	var detail *Permission
 
 	db.GormClient.Model(&model.Permission{}).Where("path = ?", path).Where("method = ?", method).Take(&detail)
 

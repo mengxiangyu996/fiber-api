@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/response"
 
@@ -37,7 +36,7 @@ func (*Config) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "配置名称已存在")
 	}
 
-	if err := (&service.Config{}).Create(&model.Config{
+	if err := (&service.Config{}).Create(&service.Config{
 		GroupName:   req.GroupName,
 		Name:        req.Name,
 		Description: req.Description,
@@ -78,7 +77,7 @@ func (*Config) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "配置名称已存在")
 	}
 
-	if err := (&service.Config{}).Update(&model.Config{
+	if err := (&service.Config{}).Update(&service.Config{
 		Id:          req.Id,
 		GroupName:   req.GroupName,
 		Name:        req.Name,

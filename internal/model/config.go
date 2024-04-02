@@ -8,14 +8,14 @@ import (
 
 // 配置模型
 type Config struct {
-	Id          int            `json:"id" gorm:"autoIncrement"`
-	CreateTime  time.Time      `json:"createTime" gorm:"autoCreateTime"`
-	UpdateTime  time.Time      `json:"updateTime" gorm:"autoUpdateTime"`
-	DeleteTime  gorm.DeletedAt `json:"deleteTime"`
-	GroupName   string         `json:"groupName"`
-	Name        string         `json:"name"`
-	Description string         `json:"description"`
-	Value       string         `json:"value"`
-	Remark      string         `json:"remark"`
-	Status      int            `json:"status" gorm:"default:1"`
+	Id          int       `gorm:"autoIncrement"`
+	CreateTime  time.Time `gorm:"autoCreateTime"`
+	UpdateTime  time.Time `gorm:"autoUpdateTime"`
+	DeleteTime  gorm.DeletedAt
+	GroupName   string
+	Name        string
+	Description string
+	Value       string
+	Remark      string
+	Status      int `gorm:"default:1"`
 }

@@ -25,7 +25,7 @@ func (*Admin) Handle(ctx *fiber.Ctx) error {
 		return ctx.Next()
 	}
 	// 非超级管理员检查角色
-	adminRoles := (&service.AdminRoleRelation{}).List(admin.Id)
+	adminRoles := (&service.AdminRole{}).List(admin.Id)
 	if len(adminRoles) <= 0 {
 		return response.Base(ctx, 10403, "无权限", nil)
 	}
@@ -38,7 +38,7 @@ func (*Admin) Handle(ctx *fiber.Ctx) error {
 
 	// 绑定权限检查
 	for _, adminRole := range adminRoles {
-		rolePermission := (&service.RolePermissionRelation{}).DetailByRoleIdWithPermissionId(adminRole.RoleId, permission.Id)
+		rolePermission := (&service.RolePermission{}).DetailByRoleIdWithPermissionId(adminRole.RoleId, permission.Id)
 		if rolePermission.Id > 0 {
 			return ctx.Next()
 		}

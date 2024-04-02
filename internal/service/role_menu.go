@@ -6,16 +6,20 @@ import (
 )
 
 // 角色菜单关系数据服务
-type RoleMenuRelation struct{}
+type RoleMenu struct {
+	Id     int `json:"id"`
+	RoleId int `json:"roleId"`
+	MenuId int `json:"menuId"`
+}
 
 // 绑定菜单
-func (*RoleMenuRelation) Bind(roleId int, menuIds []int) error {
+func (*RoleMenu) Bind(roleId int, menuIds []int) error {
 
 	// 开启事务
 	tx := db.GormClient.Begin()
 
 	// 删除已绑定菜单
-	if err := tx.Model(&model.RoleMenuRelation{}).Where("role_id = ?", roleId).Delete(nil).Error; err != nil {
+	if err := tx.Model(&model.RoleMenu{}).Where("role_id = ?", roleId).Delete(nil).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
@@ -23,7 +27,7 @@ func (*RoleMenuRelation) Bind(roleId int, menuIds []int) error {
 	if len(menuIds) > 0 {
 		// 重新绑定角色
 		for _, menuId := range menuIds {
-			if err := tx.Model(&model.RoleMenuRelation{}).Create(&model.RoleMenuRelation{
+			if err := tx.Model(&model.RoleMenu{}).Create(&model.RoleMenu{
 				RoleId: roleId,
 				MenuId: menuId,
 			}).Error; err != nil {
@@ -39,11 +43,11 @@ func (*RoleMenuRelation) Bind(roleId int, menuIds []int) error {
 }
 
 // 绑定菜单列表
-func (*RoleMenuRelation) List(roleId int) []*model.RoleMenuRelation {
+func (*RoleMenu) List(roleId int) []*RoleMenu {
 
-	var list []*model.RoleMenuRelation
+	var list []*RoleMenu
 
-	db.GormClient.Model(&model.RoleMenuRelation{}).Where("role_id = ?", roleId).Find(&list)
+	db.GormClient.Model(&model.RoleMenu{}).Where("role_id = ?", roleId).Find(&list)
 
 	return list
 }

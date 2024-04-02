@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"breeze-api/internal/model"
 	"breeze-api/internal/service"
 	"breeze-api/pkg/response"
 
@@ -37,7 +36,7 @@ func (*Permission) Create(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "权限已存在")
 	}
 
-	if err := (&service.Permission{}).Create(&model.Permission{
+	if err := (&service.Permission{}).Create(&service.Permission{
 		Name:      req.Name,
 		GroupName: req.GroupName,
 		Path:      req.Path,
@@ -77,7 +76,7 @@ func (*Permission) Update(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "权限已存在")
 	}
 
-	if err := (&service.Permission{}).Update(&model.Permission{
+	if err := (&service.Permission{}).Update(&service.Permission{
 		Id:        req.Id,
 		Name:      req.Name,
 		GroupName: req.GroupName,
