@@ -37,9 +37,7 @@ func (*AdminRole) Bind(adminId int, roleIds []int) error {
 		}
 	}
 
-	tx.Commit()
-
-	return nil
+	return tx.Commit().Error
 }
 
 // 绑定角色列表

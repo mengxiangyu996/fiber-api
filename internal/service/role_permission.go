@@ -37,9 +37,7 @@ func (*RolePermission) Bind(roleId int, permissionIds []int) error {
 		}
 	}
 
-	tx.Commit()
-
-	return nil
+	return tx.Commit().Error
 }
 
 // 绑定权限列表

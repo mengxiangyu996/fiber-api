@@ -37,9 +37,7 @@ func (*RoleMenu) Bind(roleId int, menuIds []int) error {
 		}
 	}
 
-	tx.Commit()
-
-	return nil
+	return tx.Commit().Error
 }
 
 // 绑定菜单列表
