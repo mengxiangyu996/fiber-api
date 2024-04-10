@@ -5,7 +5,7 @@
 ### 使用说明
 ###### 克隆项目
 ```
-git clone git@github.com:ZeroMxy/breeze-api.git
+git clone git@github.com:mengxiangyu996/breeze-api.git
 ```
 ###### 进入目录
 ```
