@@ -5,23 +5,16 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"encoding/hex"
-	"encoding/json"
 )
 
 // 加密
 func Generate(password string) string {
-
-	passwordByte, _ := json.Marshal(password)
-
-	return base64.StdEncoding.EncodeToString([]byte(string(passwordByte) + signature()))
+	return base64.StdEncoding.EncodeToString([]byte(password + signature()))
 }
 
 // 比较
 func Compare(hashPassword, password string) bool {
-
-	passwordByte, _ := json.Marshal(password)
-
-	return base64.StdEncoding.EncodeToString([]byte(string(passwordByte) + signature())) == hashPassword
+	return base64.StdEncoding.EncodeToString([]byte(password+signature())) == hashPassword
 }
 
 // 签名
