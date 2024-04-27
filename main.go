@@ -34,11 +34,11 @@ func main() {
 		},
 	})
 
-	// 根目录
-	app.Static("/", "./web")
-
 	// 初始化数据库
 	database.Init()
+
+	// 根目录
+	app.Static("/", "./web")
 
 	// 注册路由
 	router.AdminRouter(app)
