@@ -23,7 +23,7 @@ function start() {
     if [ -n "${pid}" ]; then
         echo "${APP} is already running, pid is ${pid}"
     else
-        nohup ${APP} >/dev/null 2>&1 &
+        nohup ${APP} >> console.log 2>&1 &
         echo "${APP} start success"
     fi
 }
