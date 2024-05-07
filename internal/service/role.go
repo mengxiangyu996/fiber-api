@@ -14,12 +14,18 @@ type Role struct {
 
 // 创建角色
 func (*Role) Create(role *Role) error {
-	return db.GormClient.Model(&model.Role{}).Create(&role).Error
+	return db.GormClient.Model(&model.Role{}).Create(&model.Role{
+		Name:   role.Name,
+		Status: role.Status,
+	}).Error
 }
 
 // 更新角色
 func (*Role) Update(role *Role) error {
-	return db.GormClient.Model(&model.Role{}).Where("id = ?", role.Id).Updates(&role).Error
+	return db.GormClient.Model(&model.Role{}).Where("id = ?", role.Id).Updates(&model.Role{
+		Name:   role.Name,
+		Status: role.Status,
+	}).Error
 }
 
 // 删除角色

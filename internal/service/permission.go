@@ -17,12 +17,24 @@ type Permission struct {
 
 // 创建权限
 func (*Permission) Create(permission *Permission) error {
-	return db.GormClient.Model(&model.Permission{}).Create(&permission).Error
+	return db.GormClient.Model(&model.Permission{}).Create(&model.Permission{
+		Name:      permission.Name,
+		GroupName: permission.GroupName,
+		Path:      permission.Path,
+		Method:    permission.Method,
+		Status:    permission.Status,
+	}).Error
 }
 
 // 更新权限
 func (*Permission) Update(permission *Permission) error {
-	return db.GormClient.Model(&model.Permission{}).Where("id = ?", permission.Id).Updates(&permission).Error
+	return db.GormClient.Model(&model.Permission{}).Where("id = ?", permission.Id).Updates(&model.Permission{
+		Name:      permission.Name,
+		GroupName: permission.GroupName,
+		Path:      permission.Path,
+		Method:    permission.Method,
+		Status:    permission.Status,
+	}).Error
 }
 
 // 删除权限

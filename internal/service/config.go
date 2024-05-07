@@ -18,12 +18,26 @@ type Config struct {
 
 // 创建配置
 func (*Config) Create(config *Config) error {
-	return db.GormClient.Model(&model.Config{}).Create(&config).Error
+	return db.GormClient.Model(&model.Config{}).Create(&model.Config{
+		GroupName:   config.GroupName,
+		Name:        config.Name,
+		Description: config.Description,
+		Value:       config.Value,
+		Remark:      config.Remark,
+		Status:      config.Status,
+	}).Error
 }
 
 // 更新配置
 func (*Config) Update(config *Config) error {
-	return db.GormClient.Model(&model.Config{}).Where("id = ?", config.Id).Updates(&config).Error
+	return db.GormClient.Model(&model.Config{}).Where("id = ?", config.Id).Updates(&model.Config{
+		GroupName:   config.GroupName,
+		Name:        config.Name,
+		Description: config.Description,
+		Value:       config.Value,
+		Remark:      config.Remark,
+		Status:      config.Status,
+	}).Error
 }
 
 // 删除配置

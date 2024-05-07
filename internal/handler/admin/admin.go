@@ -151,7 +151,7 @@ func (*Admin) Page(ctx *fiber.Ctx) error {
 
 	var req request
 
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.QueryParser(&req); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 

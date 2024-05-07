@@ -1,16 +1,16 @@
 package model
 
 import (
-	"time"
+	"breeze-api/pkg/datetime"
 
 	"gorm.io/gorm"
 )
 
 // 角色模型
 type Role struct {
-	Id         int       `gorm:"autoIncrement"`
-	CreateTime time.Time `gorm:"autoCreateTime"`
-	UpdateTime time.Time `gorm:"autoUpdateTime"`
+	Id         int           `gorm:"autoIncrement"`
+	CreateTime datetime.Time `gorm:"autoCreateTime"`
+	UpdateTime datetime.Time `gorm:"autoUpdateTime"`
 	DeleteTime gorm.DeletedAt
 	Name       string
 	Status     int `gorm:"default:1"`

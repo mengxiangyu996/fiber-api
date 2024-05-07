@@ -1,16 +1,16 @@
 package model
 
 import (
-	"time"
+	"breeze-api/pkg/datetime"
 
 	"gorm.io/gorm"
 )
 
 // 菜单模型
 type Menu struct {
-	Id         int       `gorm:"autoIncrement"`
-	CreateTime time.Time ` gorm:"autoCreateTime"`
-	UpdateTime time.Time ` gorm:"autoUpdateTime"`
+	Id         int           `gorm:"autoIncrement"`
+	CreateTime datetime.Time `gorm:"autoCreateTime"`
+	UpdateTime datetime.Time `gorm:"autoUpdateTime"`
 	DeleteTime gorm.DeletedAt
 	ParentId   int `gorm:"default:0"`
 	Name       string

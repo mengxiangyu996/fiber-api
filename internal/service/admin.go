@@ -2,36 +2,58 @@ package service
 
 import (
 	"breeze-api/internal/model"
+	"breeze-api/pkg/datetime"
 	"breeze-api/pkg/db"
 )
 
 // 管理员数据服务
 type Admin struct {
-	Id       int    `json:"id"`
-	Username string `json:"username"`
-	Nickname string `json:"nickname"`
-	Gender   int    `json:"gender"`
-	Email    string `json:"email"`
-	Phone    string `json:"phone"`
-	Password string `json:"password"`
-	Avatar   string `json:"avatar"`
-	Status   int    `json:"status"`
+	Id         int           `json:"id"`
+	Username   string        `json:"username"`
+	Nickname   string        `json:"nickname"`
+	Gender     int           `json:"gender"`
+	Email      string        `json:"email"`
+	Phone      string        `json:"phone"`
+	Password   string        `json:"password"`
+	Avatar     string        `json:"avatar"`
+	Status     int           `json:"status"`
+	CreateTime datetime.Time `json:"createTime"`
 }
 
 // 创建管理员
 func (*Admin) Create(admin *Admin) int {
 
-	if err := db.GormClient.Model(&model.Admin{}).Create(&admin).Error; err != nil {
+	data := &model.Admin{
+		Username: admin.Username,
+		Nickname: admin.Nickname,
+		Gender:   admin.Gender,
+		Email:    admin.Email,
+		Phone:    admin.Phone,
+		Password: admin.Password,
+		Avatar:   admin.Avatar,
+		Status:   admin.Status,
+	}
+
+	if err := db.GormClient.Model(&model.Admin{}).Create(&data).Error; err != nil {
 		return 0
 	}
 
-	return admin.Id
+	return data.Id
 }
 
 // 更新管理员
 func (*Admin) Update(admin *Admin) int {
 
-	if err := db.GormClient.Model(&model.Admin{}).Where("id = ?", admin.Id).Updates(&admin).Error; err != nil {
+	if err := db.GormClient.Model(&model.Admin{}).Where("id = ?", admin.Id).Updates(&model.Admin{
+		Username: admin.Username,
+		Nickname: admin.Nickname,
+		Gender:   admin.Gender,
+		Email:    admin.Email,
+		Phone:    admin.Phone,
+		Password: admin.Password,
+		Avatar:   admin.Avatar,
+		Status:   admin.Status,
+	}).Error; err != nil {
 		return 0
 	}
 
