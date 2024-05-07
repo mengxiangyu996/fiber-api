@@ -19,7 +19,7 @@ func (t Time) MarshalJSON() ([]byte, error) {
 		return []byte("null"), nil
 	}
 
-	return []byte("\"" + t.Local().Format("2006-01-02 15:04:05") + "\""), nil
+	return []byte("\"" + t.Format("2006-01-02 15:04:05") + "\""), nil
 }
 
 // 将Json格式解码
@@ -81,5 +81,5 @@ func (t *Time) Scan(i interface{}) error {
 
 // 返回字符串
 func (t *Time) String() string {
-	return t.Local().Format("2006-01-02 15:04:05")
+	return t.Format("2006-01-02 15:04:05")
 }

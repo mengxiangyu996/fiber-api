@@ -19,7 +19,7 @@ func (t Date) MarshalJSON() ([]byte, error) {
 		return []byte("null"), nil
 	}
 
-	return []byte("\"" + t.Local().Format("2006-01-02") + "\""), nil
+	return []byte("\"" + t.Format("2006-01-02") + "\""), nil
 }
 
 // 将Json格式解码
@@ -70,5 +70,5 @@ func (t *Date) Scan(i interface{}) error {
 
 // 返回字符串
 func (t *Date) String() string {
-	return t.Local().Format("2006-01-02")
+	return t.Format("2006-01-02")
 }
