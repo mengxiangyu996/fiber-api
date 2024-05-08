@@ -57,11 +57,11 @@ func (t Date) Value() (driver.Value, error) {
 	return t.Time, nil
 }
 
-// 数据库值转换为Time
-func (t *Date) Scan(i interface{}) error {
+// 数据库值转换为Date
+func (t *Date) Scan(value interface{}) error {
 
-	if value, ok := i.(time.Time); ok {
-		*t = Date{Time: value}
+	if val, ok := value.(time.Time); ok {
+		*t = Date{Time: val}
 		return nil
 	}
 

@@ -58,10 +58,10 @@ func (t Time) Value() (driver.Value, error) {
 }
 
 // 数据库值转换为Time
-func (t *Time) Scan(i interface{}) error {
+func (t *Time) Scan(value interface{}) error {
 
-	if value, ok := i.(time.Time); ok {
-		*t = Time{Time: value}
+	if val, ok := value.(time.Time); ok {
+		*t = Time{Time: val}
 		return nil
 	}
 
