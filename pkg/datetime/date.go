@@ -36,6 +36,7 @@ func (t *Date) UnmarshalJSON(data []byte) error {
 	// 自定义格式解析
 	if now, err = time.ParseInLocation("2006-01-02", string(data), time.Local); err == nil {
 		*t = Date{now}
+		return err
 	}
 
 	// 带引号的自定义格式解析
