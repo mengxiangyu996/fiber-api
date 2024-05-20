@@ -81,6 +81,6 @@ func (t *DateTime) Scan(value interface{}) error {
 }
 
 // 返回字符串
-func (t *DateTime) String() string {
+func (t DateTime) String() string {
 	return t.Format("2006-01-02 15:04:05")
 }

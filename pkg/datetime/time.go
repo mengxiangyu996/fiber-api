@@ -70,6 +70,6 @@ func (t *Time) Scan(value interface{}) error {
 }
 
 // 返回字符串
-func (t *Time) String() string {
+func (t Time) String() string {
 	return t.Format("15:04:05")
 }

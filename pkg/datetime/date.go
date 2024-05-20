@@ -70,6 +70,6 @@ func (t *Date) Scan(value interface{}) error {
 }
 
 // 返回字符串
-func (t *Date) String() string {
+func (t Date) String() string {
 	return t.Format("2006-01-02")
 }
