@@ -68,8 +68,3 @@ func (t *Time) Scan(value interface{}) error {
 
 	return errors.New("无法将值转换为时间戳")
 }
-
-// 返回字符串
-func (t Time) String() string {
-	return t.Format("15:04:05")
-}

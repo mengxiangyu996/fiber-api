@@ -68,8 +68,3 @@ func (t *Date) Scan(value interface{}) error {
 
 	return errors.New("无法将值转换为时间戳")
 }
-
-// 返回字符串
-func (t Date) String() string {
-	return t.Format("2006-01-02")
-}
