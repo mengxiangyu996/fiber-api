@@ -1,4 +1,4 @@
-package http
+package request
 
 import (
 	"bytes"
@@ -11,6 +11,10 @@ import (
 	"strings"
 )
 
+type Request struct {
+	Client *http.Client
+}
+
 // HTTP请求参数
 type RequestParam struct {
 	Url     string
@@ -19,14 +23,26 @@ type RequestParam struct {
 	Query   map[string]interface{}
 	Json    map[string]interface{}
 	Form    map[string]interface{}
-	Body	string
+	Body    string
 	Context context.Context
 }
 
-var client = http.DefaultClient
+// 初始化客户端
+func NewClient(client ...*http.Client) *Request {
 
-// HTTP请求
-func SendRequest(requestParam *RequestParam) (string, error) {
+	if len(client) <= 0 {
+		return &Request{
+			Client: http.DefaultClient,
+		}
+	}
+
+	return &Request{
+		Client: client[0],
+	}
+}
+
+// 发送请求
+func (t *Request) Send(requestParam *RequestParam) (string, error) {
 
 	var (
 		request *http.Request
@@ -52,7 +68,7 @@ func SendRequest(requestParam *RequestParam) (string, error) {
 	}
 
 	// 发送HTTP请求
-	result, err := client.Do(request)
+	result, err := t.Client.Do(request)
 	if err != nil {
 		return "", err
 	}
@@ -68,7 +84,7 @@ func SendRequest(requestParam *RequestParam) (string, error) {
 	return buffer.String(), nil
 }
 
-// 创建http请求
+// 创建请求
 func createRequest(requestParam *RequestParam) (*http.Request, error) {
 
 	switch strings.ToLower(requestParam.Method) {
