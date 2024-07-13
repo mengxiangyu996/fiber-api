@@ -7,12 +7,12 @@ import (
 )
 
 // 日期时间
-type DateTime struct {
+type Datetime struct {
 	time.Time
 }
 
 // 编码为自定义的Json格式
-func (t DateTime) MarshalJSON() ([]byte, error) {
+func (t Datetime) MarshalJSON() ([]byte, error) {
 
 	// 时间为零返回null
 	if t.IsZero() {
@@ -23,7 +23,7 @@ func (t DateTime) MarshalJSON() ([]byte, error) {
 }
 
 // 将Json格式解码
-func (t *DateTime) UnmarshalJSON(data []byte) error {
+func (t *Datetime) UnmarshalJSON(data []byte) error {
 
 	var err error
 
@@ -35,24 +35,24 @@ func (t *DateTime) UnmarshalJSON(data []byte) error {
 
 	// 自定义格式解析
 	if now, err = time.ParseInLocation("2006-01-02 15:04:05", string(data), time.Local); err == nil {
-		*t = DateTime{now}
+		*t = Datetime{now}
 		return err
 	}
 
 	// 带引号的自定义格式解析
 	if now, err = time.ParseInLocation("\"2006-01-02 15:04:05\"", string(data), time.Local); err == nil {
-		*t = DateTime{now}
+		*t = Datetime{now}
 		return err
 	}
 
 	// 默认格式解析
 	if now, err = time.ParseInLocation(time.RFC3339, string(data), time.Local); err == nil {
-		*t = DateTime{now}
+		*t = Datetime{now}
 		return err
 	}
 
 	if now, err = time.ParseInLocation("\""+time.RFC3339+"\"", string(data), time.Local); err == nil {
-		*t = DateTime{now}
+		*t = Datetime{now}
 		return err
 	}
 
@@ -60,7 +60,7 @@ func (t *DateTime) UnmarshalJSON(data []byte) error {
 }
 
 // 转换为数据库值
-func (t DateTime) Value() (driver.Value, error) {
+func (t Datetime) Value() (driver.Value, error) {
 
 	if t.IsZero() {
 		return nil, nil
@@ -70,10 +70,10 @@ func (t DateTime) Value() (driver.Value, error) {
 }
 
 // 数据库值转换为Datetime
-func (t *DateTime) Scan(value interface{}) error {
+func (t *Datetime) Scan(value interface{}) error {
 
 	if val, ok := value.(time.Time); ok {
-		*t = DateTime{Time: val}
+		*t = Datetime{Time: val}
 		return nil
 	}
 
