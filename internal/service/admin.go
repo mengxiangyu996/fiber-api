@@ -17,7 +17,7 @@ type Admin struct {
 	Password   string            `json:"password"`
 	Avatar     string            `json:"avatar"`
 	Status     int               `json:"status"`
-	CreateTime datetime.DateTime `json:"createTime"`
+	CreateTime datetime.Datetime `json:"createTime"`
 }
 
 // 创建管理员

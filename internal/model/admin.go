@@ -9,8 +9,8 @@ import (
 // 管理员模型
 type Admin struct {
 	Id         int               `gorm:"autoIncrement"`
-	CreateTime datetime.DateTime `gorm:"autoCreateTime"`
-	UpdateTime datetime.DateTime `gorm:"autoUpdateTime"`
+	CreateTime datetime.Datetime `gorm:"autoCreateTime"`
+	UpdateTime datetime.Datetime `gorm:"autoUpdateTime"`
 	DeleteTime gorm.DeletedAt
 	Username   string
 	Nickname   string
