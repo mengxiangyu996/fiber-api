@@ -8,16 +8,16 @@ import (
 
 // 管理员数据服务
 type Admin struct {
-	Id         int           `json:"id"`
-	Username   string        `json:"username"`
-	Nickname   string        `json:"nickname"`
-	Gender     int           `json:"gender"`
-	Email      string        `json:"email"`
-	Phone      string        `json:"phone"`
-	Password   string        `json:"password"`
-	Avatar     string        `json:"avatar"`
-	Status     int           `json:"status"`
-	CreateTime datetime.Time `json:"createTime"`
+	Id         int               `json:"id"`
+	Username   string            `json:"username"`
+	Nickname   string            `json:"nickname"`
+	Gender     int               `json:"gender"`
+	Email      string            `json:"email"`
+	Phone      string            `json:"phone"`
+	Password   string            `json:"password"`
+	Avatar     string            `json:"avatar"`
+	Status     int               `json:"status"`
+	CreateTime datetime.DateTime `json:"createTime"`
 }
 
 // 创建管理员
