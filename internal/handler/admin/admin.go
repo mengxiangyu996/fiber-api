@@ -190,27 +190,31 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 		adminResult.Avatar = admin.Avatar
 		adminResult.Status = admin.Status
 		// 管理员权限
-		adminRoles := (&service.AdminRole{}).List(admin.Id)
-		if len(adminRoles) > 0 {
-			for _, adminRole := range adminRoles {
-				role := (&service.Role{}).Detail(adminRole.RoleId)
-				if role.Status != 1 {
-					continue
+		if admin.Id != 1 {
+			adminRoles := (&service.AdminRole{}).List(admin.Id)
+			if len(adminRoles) > 0 {
+				for _, adminRole := range adminRoles {
+					role := (&service.Role{}).Detail(adminRole.RoleId)
+					if role.Status != 1 {
+						continue
+					}
+					adminResult.Roles = append(adminResult.Roles, &AdminRole{
+						Id:   role.Id,
+						Name: role.Name,
+					})
+					// 角色绑定的菜单
+					roleMenus := (&service.RoleMenu{}).List(role.Id)
+					if len(roleMenus) <= 0 {
+						continue
+					}
+					var menuIds []int
+					for _, roleMenu := range roleMenus {
+						menuIds = append(menuIds, roleMenu.MenuId)
+					}
+					adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(menuIds), 0)
 				}
-				adminResult.Roles = append(adminResult.Roles, &AdminRole{
-					Id:   role.Id,
-					Name: role.Name,
-				})
-				// 角色绑定的菜单
-				roleMenus := (&service.RoleMenu{}).List(role.Id)
-				if len(roleMenus) <= 0 {
-					continue
-				}
-				var menuIds []int
-				for _, roleMenu := range roleMenus {
-					menuIds = append(menuIds, roleMenu.MenuId)
-				}
-				adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(menuIds), 0)
+			} else {
+				adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(nil), 0)
 			}
 		}
 	}
