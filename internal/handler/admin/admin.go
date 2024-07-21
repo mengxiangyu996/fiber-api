@@ -213,9 +213,9 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 					}
 					adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(menuIds), 0)
 				}
-			} else {
-				adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(nil), 0)
 			}
+		} else {
+			adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(nil), 0)
 		}
 	}
 
