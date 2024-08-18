@@ -13,7 +13,7 @@ type Config struct{}
 // 创建配置
 func (*Config) Create(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		GroupName   string `json:"groupName"`
 		Name        string `json:"name"`
 		Description string `json:"description"`
@@ -22,27 +22,25 @@ func (*Config) Create(ctx *fiber.Ctx) error {
 		Status      int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Name == "" {
+	if param.Name == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if config := (&service.Config{}).DetailByName(req.Name); config.Id > 0 {
+	if config := (&service.Config{}).DetailByName(param.Name); config.Id > 0 {
 		return response.Error(ctx, "配置名称已存在")
 	}
 
 	if err := (&service.Config{}).Create(&service.Config{
-		GroupName:   req.GroupName,
-		Name:        req.Name,
-		Description: req.Description,
-		Value:       req.Value,
-		Remark:      req.Remark,
-		Status:      req.Status,
+		GroupName:   param.GroupName,
+		Name:        param.Name,
+		Description: param.Description,
+		Value:       param.Value,
+		Remark:      param.Remark,
+		Status:      param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
@@ -53,7 +51,7 @@ func (*Config) Create(ctx *fiber.Ctx) error {
 // 更新配置
 func (*Config) Update(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Id          int    `json:"id"`
 		GroupName   string `json:"groupName"`
 		Name        string `json:"name"`
@@ -63,28 +61,26 @@ func (*Config) Update(ctx *fiber.Ctx) error {
 		Status      int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Id <= 0 || req.Name == "" {
+	if param.Id <= 0 || param.Name == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if config := (&service.Config{}).DetailByName(req.Name); config.Id > 0 && config.Id != req.Id {
+	if config := (&service.Config{}).DetailByName(param.Name); config.Id > 0 && config.Id != param.Id {
 		return response.Error(ctx, "配置名称已存在")
 	}
 
 	if err := (&service.Config{}).Update(&service.Config{
-		Id:          req.Id,
-		GroupName:   req.GroupName,
-		Name:        req.Name,
-		Description: req.Description,
-		Value:       req.Value,
-		Remark:      req.Remark,
-		Status:      req.Status,
+		Id:          param.Id,
+		GroupName:   param.GroupName,
+		Name:        param.Name,
+		Description: param.Description,
+		Value:       param.Value,
+		Remark:      param.Remark,
+		Status:      param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
@@ -95,21 +91,13 @@ func (*Config) Update(ctx *fiber.Ctx) error {
 // 删除配置
 func (*Config) Delete(ctx *fiber.Ctx) error {
 
-	type request struct {
-		Id int `json:"id"`
-	}
+	id := ctx.QueryInt("id")
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
-		return response.Error(ctx, err.Error())
-	}
-
-	if req.Id <= 0 {
+	if id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.Config{}).Delete(req.Id); err != nil {
+	if err := (&service.Config{}).Delete(id); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 

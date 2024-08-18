@@ -13,7 +13,7 @@ type Menu struct{}
 // 创建菜单
 func (*Menu) Create(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		ParentId  int    `json:"parentId"`
 		Name      string `json:"name"`
 		Type      int    `json:"type"`
@@ -25,26 +25,24 @@ func (*Menu) Create(ctx *fiber.Ctx) error {
 		Status    int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Name == "" || req.Type <= 0 || req.Path == "" {
+	if param.Name == "" || param.Type <= 0 || param.Path == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
 	if err := (&service.Menu{}).Create(&service.Menu{
-		ParentId:  req.ParentId,
-		Name:      req.Name,
-		Type:      req.Type,
-		Sort:      req.Sort,
-		Path:      req.Path,
-		Component: req.Component,
-		Icon:      req.Icon,
-		Redirect:  req.Redirect,
-		Status:    req.Status,
+		ParentId:  param.ParentId,
+		Name:      param.Name,
+		Type:      param.Type,
+		Sort:      param.Sort,
+		Path:      param.Path,
+		Component: param.Component,
+		Icon:      param.Icon,
+		Redirect:  param.Redirect,
+		Status:    param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
@@ -55,7 +53,7 @@ func (*Menu) Create(ctx *fiber.Ctx) error {
 // 更新菜单
 func (*Menu) Update(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Id        int    `json:"id"`
 		ParentId  int    `json:"parentId"`
 		Name      string `json:"name"`
@@ -68,27 +66,25 @@ func (*Menu) Update(ctx *fiber.Ctx) error {
 		Status    int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Id <= 0 {
+	if param.Id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
 	if err := (&service.Menu{}).Update(&service.Menu{
-		Id:        req.Id,
-		ParentId:  req.ParentId,
-		Name:      req.Name,
-		Type:      req.Type,
-		Sort:      req.Sort,
-		Path:      req.Path,
-		Component: req.Component,
-		Icon:      req.Icon,
-		Redirect:  req.Redirect,
-		Status:    req.Status,
+		Id:        param.Id,
+		ParentId:  param.ParentId,
+		Name:      param.Name,
+		Type:      param.Type,
+		Sort:      param.Sort,
+		Path:      param.Path,
+		Component: param.Component,
+		Icon:      param.Icon,
+		Redirect:  param.Redirect,
+		Status:    param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
@@ -99,26 +95,18 @@ func (*Menu) Update(ctx *fiber.Ctx) error {
 // 删除菜单
 func (*Menu) Delete(ctx *fiber.Ctx) error {
 
-	type request struct {
-		Id int `json:"id"`
-	}
+	id := ctx.QueryInt("id")
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
-		return response.Error(ctx, err.Error())
-	}
-
-	if req.Id <= 0 {
+	if id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	list := (&service.Menu{}).ChildrenList(req.Id, 0)
+	list := (&service.Menu{}).ChildrenList(id, 0)
 	if len(list) > 0 {
 		return response.Error(ctx, "存在下级菜单")
 	}
 
-	if err := (&service.Menu{}).Delete(req.Id); err != nil {
+	if err := (&service.Menu{}).Delete(id); err != nil {
 		return response.Error(ctx, "失败")
 	}
 

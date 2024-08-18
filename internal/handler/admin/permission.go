@@ -13,7 +13,7 @@ type Permission struct{}
 // 创建权限
 func (*Permission) Create(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Name      string `json:"name"`
 		GroupName string `json:"groupName"`
 		Path      string `json:"path"`
@@ -21,27 +21,25 @@ func (*Permission) Create(ctx *fiber.Ctx) error {
 		Status    int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Path == "" || req.Method == "" {
+	if param.Path == "" || param.Method == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	permission := (&service.Permission{}).DetailByPathWithMethod(req.Path, req.Method)
+	permission := (&service.Permission{}).DetailByPathWithMethod(param.Path, param.Method)
 	if permission.Id > 0 {
 		return response.Error(ctx, "权限已存在")
 	}
 
 	if err := (&service.Permission{}).Create(&service.Permission{
-		Name:      req.Name,
-		GroupName: req.GroupName,
-		Path:      req.Path,
-		Method:    req.Method,
-		Status:    req.Status,
+		Name:      param.Name,
+		GroupName: param.GroupName,
+		Path:      param.Path,
+		Method:    param.Method,
+		Status:    param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
@@ -52,7 +50,7 @@ func (*Permission) Create(ctx *fiber.Ctx) error {
 // 更新权限
 func (*Permission) Update(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Id        int    `json:"id"`
 		Name      string `json:"name"`
 		GroupName string `json:"groupName"`
@@ -61,28 +59,26 @@ func (*Permission) Update(ctx *fiber.Ctx) error {
 		Status    int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Id <= 0 || req.Path == "" || req.Method == "" {
+	if param.Id <= 0 || param.Path == "" || param.Method == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	permission := (&service.Permission{}).DetailByPathWithMethod(req.Path, req.Method)
-	if permission.Id > 0 && permission.Id != req.Id {
+	permission := (&service.Permission{}).DetailByPathWithMethod(param.Path, param.Method)
+	if permission.Id > 0 && permission.Id != param.Id {
 		return response.Error(ctx, "权限已存在")
 	}
 
 	if err := (&service.Permission{}).Update(&service.Permission{
-		Id:        req.Id,
-		Name:      req.Name,
-		GroupName: req.GroupName,
-		Path:      req.Path,
-		Method:    req.Method,
-		Status:    req.Status,
+		Id:        param.Id,
+		Name:      param.Name,
+		GroupName: param.GroupName,
+		Path:      param.Path,
+		Method:    param.Method,
+		Status:    param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
@@ -93,21 +89,13 @@ func (*Permission) Update(ctx *fiber.Ctx) error {
 // 删除权限
 func (*Permission) Delete(ctx *fiber.Ctx) error {
 
-	type request struct {
-		Id int `json:"id"`
-	}
+	id := ctx.QueryInt("id")
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
-		return response.Error(ctx, err.Error())
-	}
-
-	if req.Id <= 0 {
+	if id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.Permission{}).Delete(req.Id); err != nil {
+	if err := (&service.Permission{}).Delete(id); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -120,20 +108,18 @@ func (*Permission) Page(ctx *fiber.Ctx) error {
 	page := ctx.QueryInt("page", 1)
 	size := ctx.QueryInt("size", 10)
 
-	type request struct {
+	var param struct {
 		Name      string `query:"name"`
 		GroupName string `query:"groupName"`
 		Path      string `query:"path"`
 		Method    string `query:"method"`
 	}
 
-	var req request
-
-	if err := ctx.QueryParser(&req); err != nil {
+	if err := ctx.QueryParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	list, count := (&service.Permission{}).Page(page, size, req.Name, req.GroupName, req.Path, req.Method)
+	list, count := (&service.Permission{}).Page(page, size, param.Name, param.GroupName, param.Path, param.Method)
 
 	return response.Success(ctx, "成功", map[string]interface{}{
 		"list":  list,

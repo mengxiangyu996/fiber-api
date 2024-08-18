@@ -13,29 +13,27 @@ type Role struct{}
 // 创建角色
 func (*Role) Create(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Name   string `json:"name"`
 		Status int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Name == "" {
+	if param.Name == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	role := (&service.Role{}).DetailByName(req.Name)
+	role := (&service.Role{}).DetailByName(param.Name)
 	if role.Id > 0 {
 		return response.Error(ctx, "角色已存在")
 	}
 
 	if err := (&service.Role{}).Create(&service.Role{
-		Name:   req.Name,
-		Status: req.Status,
+		Name:   param.Name,
+		Status: param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
@@ -46,31 +44,29 @@ func (*Role) Create(ctx *fiber.Ctx) error {
 // 更新角色
 func (*Role) Update(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Id     int    `json:"id"`
 		Name   string `json:"name"`
 		Status int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Id <= 0 || req.Name == "" {
+	if param.Id <= 0 || param.Name == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	role := (&service.Role{}).DetailByName(req.Name)
-	if role.Id > 0 && req.Id != role.Id {
+	role := (&service.Role{}).DetailByName(param.Name)
+	if role.Id > 0 && param.Id != role.Id {
 		return response.Error(ctx, "角色已存在")
 	}
 
 	if err := (&service.Role{}).Update(&service.Role{
-		Id:     req.Id,
-		Name:   req.Name,
-		Status: req.Status,
+		Id:     param.Id,
+		Name:   param.Name,
+		Status: param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
@@ -81,21 +77,13 @@ func (*Role) Update(ctx *fiber.Ctx) error {
 // 删除角色
 func (*Role) Delete(ctx *fiber.Ctx) error {
 
-	type request struct {
-		Id int `json:"id"`
-	}
+	id := ctx.QueryInt("id")
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
-		return response.Error(ctx, err.Error())
-	}
-
-	if req.Id <= 0 {
+	if id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.Role{}).Delete(req.Id); err != nil {
+	if err := (&service.Role{}).Delete(id); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -134,22 +122,20 @@ func (*Role) Detail(ctx *fiber.Ctx) error {
 // 绑定菜单
 func (*Role) BindMenu(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		RoleId  int   `json:"roleId"`
 		MenuIds []int `json:"menuIds"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.RoleId <= 0 {
+	if param.RoleId <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.RoleMenu{}).Bind(req.RoleId, req.MenuIds); err != nil {
+	if err := (&service.RoleMenu{}).Bind(param.RoleId, param.MenuIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -185,22 +171,20 @@ func (*Role) Menus(ctx *fiber.Ctx) error {
 // 绑定权限
 func (*Role) BindPermission(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		RoleId        int   `json:"roleId"`
 		PermissionIds []int `json:"permissionIds"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.RoleId <= 0 {
+	if param.RoleId <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.RolePermission{}).Bind(req.RoleId, req.PermissionIds); err != nil {
+	if err := (&service.RolePermission{}).Bind(param.RoleId, param.PermissionIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 

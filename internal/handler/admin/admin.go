@@ -16,16 +16,14 @@ type Admin struct{}
 
 // 管理员详情返回
 type AdminResult struct {
-	Id       int                 `json:"id"`
-	Username string              `json:"username"`
-	Nickname string              `json:"nickname"`
-	Gender   int                 `json:"gender"`
-	Email    string              `json:"email"`
-	Phone    string              `json:"phone"`
-	Avatar   string              `json:"avatar"`
-	Status   int                 `json:"status"`
-	Roles    []*AdminRole        `json:"roles"`
-	Menus    []*service.MenuTree `json:"menus"`
+	Id       int    `json:"id"`
+	Username string `json:"username"`
+	Nickname string `json:"nickname"`
+	Gender   int    `json:"gender"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Avatar   string `json:"avatar"`
+	Status   int    `json:"status"`
 }
 
 // 管理员绑定的角色
@@ -34,10 +32,15 @@ type AdminRole struct {
 	Name string `json:"name"`
 }
 
+type RoleMenu struct {
+	Roles []*AdminRole        `json:"roles"`
+	Menus []*service.MenuTree `json:"menus"`
+}
+
 // 创建管理员
 func (*Admin) Create(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Username string `json:"username"`
 		Nickname string `json:"nickname"`
 		Gender   int    `json:"gender"`
@@ -47,30 +50,28 @@ func (*Admin) Create(ctx *fiber.Ctx) error {
 		Status   int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Username == "" {
+	if param.Username == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	admin := (&service.Admin{}).DetailByUsername(req.Username)
+	admin := (&service.Admin{}).DetailByUsername(param.Username)
 	if admin.Id > 0 {
 		return response.Error(ctx, "管理员已存在")
 	}
 
 	if adminId := (&service.Admin{}).Create(&service.Admin{
-		Username: req.Username,
-		Nickname: req.Nickname,
+		Username: param.Username,
+		Nickname: param.Nickname,
 		Password: encrypt.Generate("123456"),
-		Gender:   req.Gender,
-		Email:    req.Email,
-		Phone:    req.Phone,
-		Avatar:   req.Avatar,
-		Status:   req.Status,
+		Gender:   param.Gender,
+		Email:    param.Email,
+		Phone:    param.Phone,
+		Avatar:   param.Avatar,
+		Status:   param.Status,
 	}); adminId <= 0 {
 		return response.Error(ctx, "失败")
 	}
@@ -81,7 +82,7 @@ func (*Admin) Create(ctx *fiber.Ctx) error {
 // 更新管理员
 func (*Admin) Update(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Id       int    `json:"id"`
 		Nickname string `json:"nickname"`
 		Gender   int    `json:"gender"`
@@ -91,20 +92,18 @@ func (*Admin) Update(ctx *fiber.Ctx) error {
 		Status   int    `json:"status"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
 	if adminId := (&service.Admin{}).Update(&service.Admin{
-		Id:       req.Id,
-		Nickname: req.Nickname,
-		Gender:   req.Gender,
-		Email:    req.Email,
-		Phone:    req.Phone,
-		Avatar:   req.Avatar,
-		Status:   req.Status,
+		Id:       param.Id,
+		Nickname: param.Nickname,
+		Gender:   param.Gender,
+		Email:    param.Email,
+		Phone:    param.Phone,
+		Avatar:   param.Avatar,
+		Status:   param.Status,
 	}); adminId <= 0 {
 		return response.Error(ctx, "失败")
 	}
@@ -115,21 +114,13 @@ func (*Admin) Update(ctx *fiber.Ctx) error {
 // 删除管理员
 func (*Admin) Delete(ctx *fiber.Ctx) error {
 
-	type request struct {
-		Id int `json:"id"`
-	}
+	id := ctx.QueryInt("id", 1)
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
-		return response.Error(ctx, err.Error())
-	}
-
-	if req.Id <= 0 {
+	if id <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.Admin{}).Delete(req.Id); err != nil {
+	if err := (&service.Admin{}).Delete(id); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
@@ -142,20 +133,18 @@ func (*Admin) Page(ctx *fiber.Ctx) error {
 	page := ctx.QueryInt("page", 1)
 	size := ctx.QueryInt("size", 10)
 
-	type request struct {
+	var param struct {
 		Username string `query:"username"`
 		Nickname string `query:"nickname"`
 		Email    string `query:"email"`
 		Phone    string `query:"phone"`
 	}
 
-	var req request
-
-	if err := ctx.QueryParser(&req); err != nil {
+	if err := ctx.QueryParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	list, count := (&service.Admin{}).Page(page, size, req.Username, req.Nickname, req.Email, req.Phone)
+	list, count := (&service.Admin{}).Page(page, size, param.Username, param.Nickname, param.Email, param.Phone)
 
 	// 清除密码
 	for _, item := range list {
@@ -189,34 +178,6 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 		adminResult.Phone = admin.Phone
 		adminResult.Avatar = admin.Avatar
 		adminResult.Status = admin.Status
-		// 管理员权限
-		if admin.Id != 1 {
-			adminRoles := (&service.AdminRole{}).List(admin.Id)
-			if len(adminRoles) > 0 {
-				for _, adminRole := range adminRoles {
-					role := (&service.Role{}).Detail(adminRole.RoleId)
-					if role.Status != 1 {
-						continue
-					}
-					adminResult.Roles = append(adminResult.Roles, &AdminRole{
-						Id:   role.Id,
-						Name: role.Name,
-					})
-					// 角色绑定的菜单
-					roleMenus := (&service.RoleMenu{}).List(role.Id)
-					if len(roleMenus) <= 0 {
-						continue
-					}
-					var menuIds []int
-					for _, roleMenu := range roleMenus {
-						menuIds = append(menuIds, roleMenu.MenuId)
-					}
-					adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(menuIds), 0)
-				}
-			}
-		} else {
-			adminResult.Menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(nil), 0)
-		}
 	}
 
 	return response.Success(ctx, "成功", map[string]interface{}{
@@ -227,27 +188,25 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 // 管理员登录
 func (*Admin) Login(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Username == "" || req.Password == "" {
+	if param.Username == "" || param.Password == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
-	admin := (&service.Admin{}).DetailByUsername(req.Username)
+	admin := (&service.Admin{}).DetailByUsername(param.Username)
 	if admin.Id <= 0 {
 		return response.Error(ctx, "账号不存在")
 	}
 
-	if !encrypt.Compare(admin.Password, req.Password) {
+	if !encrypt.Compare(admin.Password, param.Password) {
 		return response.Error(ctx, "密码错误")
 	}
 
@@ -261,20 +220,67 @@ func (*Admin) Login(ctx *fiber.Ctx) error {
 	})
 }
 
-// 修改密码
-func (*Admin) ChangePassword(ctx *fiber.Ctx) error {
+// 管理员角色和菜单
+func (*Admin) AdminRoleMenu(ctx *fiber.Ctx) error {
 
-	type request struct {
-		Password string `json:"password"`
-	}
-
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	id, err := helper.GetTokenPayload(ctx)
+	if err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.Password == "" {
+	if id == 1 {
+		return response.Success(ctx, "ok", &RoleMenu{
+			Menus: (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(nil), 0),
+		})
+	}
+
+	adminRoles := (&service.AdminRole{}).List(id)
+	if len(adminRoles) <= 0 {
+		return response.Error(ctx, "角色不存在")
+	}
+
+	var roles []*AdminRole
+	var menus []*service.MenuTree
+
+	for _, adminRole := range adminRoles {
+		role := (&service.Role{}).Detail(adminRole.RoleId)
+		if role.Status != 1 {
+			continue
+		}
+		roles = append(roles, &AdminRole{
+			Id:   role.Id,
+			Name: role.Name,
+		})
+		// 角色绑定的菜单
+		roleMenus := (&service.RoleMenu{}).List(role.Id)
+		if len(roleMenus) <= 0 {
+			continue
+		}
+		var menuIds []int
+		for _, roleMenu := range roleMenus {
+			menuIds = append(menuIds, roleMenu.MenuId)
+		}
+		menus = (&service.Menu{}).ListToTree((&service.Menu{}).ListByIds(menuIds), 0)
+	}
+
+	return response.Success(ctx, "ok", &RoleMenu{
+		Roles: roles,
+		Menus: menus,
+	})
+}
+
+// 修改密码
+func (*Admin) ChangePassword(ctx *fiber.Ctx) error {
+
+	var param struct {
+		Password string `json:"password"`
+	}
+
+	if err := ctx.BodyParser(&param); err != nil {
+		return response.Error(ctx, err.Error())
+	}
+
+	if param.Password == "" {
 		return response.Error(ctx, "参数错误")
 	}
 
@@ -282,7 +288,7 @@ func (*Admin) ChangePassword(ctx *fiber.Ctx) error {
 
 	if adminId := (&service.Admin{}).Update(&service.Admin{
 		Id:       id,
-		Password: encrypt.Generate(req.Password),
+		Password: encrypt.Generate(param.Password),
 	}); adminId <= 0 {
 		return response.Error(ctx, "失败")
 	}
@@ -293,22 +299,20 @@ func (*Admin) ChangePassword(ctx *fiber.Ctx) error {
 // 绑定角色
 func (*Admin) BindRole(ctx *fiber.Ctx) error {
 
-	type request struct {
+	var param struct {
 		AdminId int   `json:"adminId"`
 		RoleIds []int `json:"roleIds"`
 	}
 
-	var req request
-
-	if err := ctx.BodyParser(&req); err != nil {
+	if err := ctx.BodyParser(&param); err != nil {
 		return response.Error(ctx, err.Error())
 	}
 
-	if req.AdminId <= 0 {
+	if param.AdminId <= 0 {
 		return response.Error(ctx, "参数错误")
 	}
 
-	if err := (&service.AdminRole{}).Bind(req.AdminId, req.RoleIds); err != nil {
+	if err := (&service.AdminRole{}).Bind(param.AdminId, param.RoleIds); err != nil {
 		return response.Error(ctx, "失败")
 	}
 
