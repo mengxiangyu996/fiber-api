@@ -27,17 +27,16 @@ type RequestParam struct {
 	Context context.Context
 }
 
-// 初始化客户端
-func NewClient(client ...*http.Client) *Request {
-
-	if len(client) <= 0 {
-		return &Request{
-			Client: http.DefaultClient,
-		}
-	}
-
+func DefaultClient() *Request {
 	return &Request{
-		Client: client[0],
+		Client: http.DefaultClient,
+	}
+}
+
+// 初始化客户端
+func NewClient(client *http.Client) *Request {
+	return &Request{
+		Client: client,
 	}
 }
 
@@ -64,7 +63,7 @@ func (t *Request) Send(requestParam *RequestParam) (string, error) {
 
 	// 将请求与提供的context相关联
 	if requestParam.Context != nil {
-		request.WithContext(requestParam.Context)
+		request = request.WithContext(requestParam.Context)
 	}
 
 	// 发送HTTP请求
