@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"breeze-api/internal/service"
+	"breeze-api/api/service"
 	"breeze-api/pkg/response"
 
 	"github.com/gofiber/fiber/v2"

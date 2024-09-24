@@ -1,9 +1,9 @@
 package main
 
 import (
+	router "breeze-api/api/route"
 	"breeze-api/config"
 	"breeze-api/database"
-	"breeze-api/internal/router"
 	"breeze-api/pkg/db"
 	"strconv"
 

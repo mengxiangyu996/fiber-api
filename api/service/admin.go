@@ -1,7 +1,7 @@
 package service
 
 import (
-	"breeze-api/internal/model"
+	"breeze-api/api/model"
 	"breeze-api/pkg/datetime"
 	"breeze-api/pkg/db"
 )

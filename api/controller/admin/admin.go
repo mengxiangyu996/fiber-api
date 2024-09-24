@@ -1,10 +1,10 @@
 package admin
 
 import (
-	"breeze-api/helper"
-	"breeze-api/helper/encrypt"
-	"breeze-api/helper/jwt"
-	"breeze-api/internal/service"
+	"breeze-api/api/service"
+	"breeze-api/internal/encrypt"
+	"breeze-api/internal/jwt"
+	"breeze-api/internal/utils"
 	"breeze-api/pkg/response"
 	"time"
 
@@ -163,7 +163,7 @@ func (*Admin) Detail(ctx *fiber.Ctx) error {
 	id := ctx.QueryInt("id")
 	// 未传值默认当前用户
 	if id <= 0 {
-		id, _ = helper.GetTokenPayload(ctx)
+		id, _ = utils.GetTokenPayload(ctx)
 	}
 
 	var adminResult AdminResult
@@ -223,7 +223,7 @@ func (*Admin) Login(ctx *fiber.Ctx) error {
 // 管理员角色和菜单
 func (*Admin) AdminRoleMenu(ctx *fiber.Ctx) error {
 
-	id, err := helper.GetTokenPayload(ctx)
+	id, err := utils.GetTokenPayload(ctx)
 	if err != nil {
 		return response.Error(ctx, err.Error())
 	}
@@ -284,7 +284,7 @@ func (*Admin) ChangePassword(ctx *fiber.Ctx) error {
 		return response.Error(ctx, "参数错误")
 	}
 
-	id, _ := helper.GetTokenPayload(ctx)
+	id, _ := utils.GetTokenPayload(ctx)
 
 	if adminId := (&service.Admin{}).Update(&service.Admin{
 		Id:       id,

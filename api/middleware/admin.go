@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"breeze-api/helper"
-	"breeze-api/internal/service"
+	"breeze-api/api/service"
+	"breeze-api/internal/utils"
 	"breeze-api/pkg/response"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,7 +13,7 @@ type Admin struct{}
 
 func (*Admin) Handle(ctx *fiber.Ctx) error {
 
-	id, err := helper.GetTokenPayload(ctx)
+	id, err := utils.GetTokenPayload(ctx)
 	if err != nil {
 		return response.Base(ctx, 10401, err.Error(), nil)
 	}

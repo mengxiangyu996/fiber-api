@@ -1,8 +1,8 @@
 package database
 
 import (
-	"breeze-api/helper/encrypt"
-	"breeze-api/internal/service"
+	"breeze-api/api/service"
+	"breeze-api/internal/encrypt"
 	"breeze-api/pkg/db"
 	"io/ioutil"
 	"os"
@@ -49,6 +49,4 @@ func Init() {
 		Gender:   1,
 		Password: encrypt.Generate("123456"),
 	})
-
-	return
 }

@@ -1,8 +1,8 @@
-package helper
+package utils
 
 import (
-	"breeze-api/helper/jwt"
-	"breeze-api/internal/service"
+	"breeze-api/api/service"
+	"breeze-api/internal/jwt"
 	"errors"
 	"regexp"
 	"time"
