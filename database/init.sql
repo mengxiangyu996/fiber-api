@@ -34,6 +34,8 @@ create table if not exists `menu` (
     `path` varchar(128) comment '路由地址',
     `component` varchar(128) comment '组件',
     `icon` varchar(128) comment '图标',
+    `hidden` tinyint(3) comment '是否隐藏：1-是；2-否',
+    `keep_alive` tinyint(3) comment '是否缓存：1-是；2-否',
     `redirect` varchar(128) comment '重定向',
     `status` tinyint(3) default 1 comment '状态：1-启用；2-禁用'
 ) comment '菜单表';

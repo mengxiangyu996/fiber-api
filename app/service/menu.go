@@ -15,6 +15,8 @@ type Menu struct {
 	Path      string `json:"path"`
 	Component string `json:"component"`
 	Icon      string `json:"icon"`
+	Hidden    int
+	KeepAlive int
 	Redirect  string `json:"redirect"`
 	Status    int    `json:"status"`
 }
@@ -34,6 +36,8 @@ func (*Menu) Create(menu *Menu) error {
 		Path:      menu.Path,
 		Component: menu.Component,
 		Icon:      menu.Icon,
+		Hidden:    menu.Hidden,
+		KeepAlive: menu.KeepAlive,
 		Redirect:  menu.Redirect,
 		Status:    menu.Status,
 	}).Error
@@ -49,6 +53,8 @@ func (*Menu) Update(menu *Menu) error {
 		Path:      menu.Path,
 		Component: menu.Component,
 		Icon:      menu.Icon,
+		Hidden:    menu.Hidden,
+		KeepAlive: menu.KeepAlive,
 		Redirect:  menu.Redirect,
 		Status:    menu.Status,
 	}).Error

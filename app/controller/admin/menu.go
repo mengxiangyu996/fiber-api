@@ -21,6 +21,8 @@ func (*Menu) Create(ctx *fiber.Ctx) error {
 		Path      string `json:"path"`
 		Component string `json:"component"`
 		Icon      string `json:"icon"`
+		Hidden    int    `json:"hidden"`
+		KeepAlive int    `json:"keepAlive"`
 		Redirect  string `json:"redirect"`
 		Status    int    `json:"status"`
 	}
@@ -42,6 +44,8 @@ func (*Menu) Create(ctx *fiber.Ctx) error {
 		Component: param.Component,
 		Icon:      param.Icon,
 		Redirect:  param.Redirect,
+		Hidden:    param.Hidden,
+		KeepAlive: param.KeepAlive,
 		Status:    param.Status,
 	}); err != nil {
 		return response.Error(ctx, "失败")
@@ -63,6 +67,8 @@ func (*Menu) Update(ctx *fiber.Ctx) error {
 		Component string `json:"component"`
 		Icon      string `json:"icon"`
 		Redirect  string `json:"redirect"`
+		Hidden    int    `json:"hidden"`
+		KeepAlive int    `json:"keepAlive"`
 		Status    int    `json:"status"`
 	}
 
@@ -85,6 +91,8 @@ func (*Menu) Update(ctx *fiber.Ctx) error {
 		Icon:      param.Icon,
 		Redirect:  param.Redirect,
 		Status:    param.Status,
+		Hidden:    param.Hidden,
+		KeepAlive: param.KeepAlive,
 	}); err != nil {
 		return response.Error(ctx, "失败")
 	}
