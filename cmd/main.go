@@ -5,7 +5,6 @@ import (
 	"fiber-api/config"
 	"fiber-api/database"
 	"fiber-api/pkg/db"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -20,7 +19,7 @@ func main() {
 	app := fiber.New()
 
 	// dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
-	dsn := config.Mysql.Username + ":" + config.Mysql.Password + "@tcp(" + config.Mysql.Host + ":" + strconv.Itoa(config.Mysql.Port) + ")/" + config.Mysql.Database + "?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := config.Mysql.Username + ":" + config.Mysql.Password + "@tcp(" + config.Mysql.Host + ":" + config.Mysql.Port + ")/" + config.Mysql.Database + "?charset=utf8mb4&parseTime=True&loc=Local"
 
 	// 初始化数据访问层
 	db.Init(&db.DBConfig{
@@ -38,7 +37,7 @@ func main() {
 	database.Init()
 
 	// 根目录
-	app.Static("/", "./web")
+	app.Static("/", "web")
 
 	// 注册路由
 	route.AdminRouter(app)
@@ -46,5 +45,5 @@ func main() {
 	// 恢复
 	app.Use(recover.New())
 
-	app.Listen(config.App.Host + ":" + strconv.Itoa(config.App.Port))
+	app.Listen(config.App.Host)
 }

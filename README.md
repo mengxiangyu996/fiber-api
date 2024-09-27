@@ -43,7 +43,7 @@ export GOPROXY=https://goproxy.cn
 GOARCH=arm64 GOOS=linux go build -o main main.go
 ```
 ###### 构建物上传配置
-![image](https://github.com/user-attachments/assets/8ffe3e99-3f09-4326-9abd-df807b1ac021)
+![image](http://fiber-api.ddnsgeek.com/20240927103036.png)
 
 
 * #### 部署

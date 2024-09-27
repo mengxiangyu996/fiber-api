@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"strconv"
 	"time"
 
 	"github.com/go-redis/redis/v8"
@@ -21,7 +20,7 @@ type GormConfig struct {
 
 type RedisConfig struct {
 	Host     string
-	Port     int
+	Port     string
 	Database int
 	Password string
 }
@@ -42,13 +41,11 @@ func Init(config *DBConfig) {
 	// 初始化 Redis
 	if config.RedisConfig != nil {
 		initRedis(&redis.Options{
-			Addr:     config.RedisConfig.Host + ":" + strconv.Itoa(config.RedisConfig.Port),
+			Addr:     config.RedisConfig.Host + ":" + config.RedisConfig.Port,
 			Password: config.RedisConfig.Password,
 			DB:       config.RedisConfig.Database,
 		})
 	}
-
-	return
 }
 
 // 初始化 Gorm
@@ -73,8 +70,6 @@ func initGorm(dialector gorm.Dialector, opts gorm.Option) {
 	if err = sqlDB.Ping(); err != nil {
 		panic(err)
 	}
-
-	return
 }
 
 // 初始化 Redis
@@ -85,6 +80,4 @@ func initRedis(opts *redis.Options) {
 	if _, err := RedisClient.Ping(context.Background()).Result(); err != nil {
 		panic(err)
 	}
-
-	return
 }

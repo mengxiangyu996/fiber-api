@@ -1,10 +1,10 @@
 package upload
 
 import (
-	"fiber-api/config"
-	"fiber-api/pkg/storage"
 	"encoding/base64"
 	"errors"
+	"fiber-api/config"
+	"fiber-api/pkg/storage"
 	"io/ioutil"
 	"mime/multipart"
 	"strings"
@@ -19,7 +19,7 @@ func File(fileHeader *multipart.FileHeader) (string, error) {
 	// 保存文件
 	url, err := storage.Default().SetFileName(fileHeader.Filename).SetFileContent(fileByte).Save()
 
-	return url, err
+	return rewriteUrl(url), err
 }
 
 // 上传base64文件
@@ -33,7 +33,7 @@ func Base64(file, name string) (string, error) {
 	// 保存文件
 	url, err := storage.Default().SetFileName(name).SetFileContent(fileByte).Save()
 
-	return url, err
+	return rewriteUrl(url), err
 }
 
 // 重写url
@@ -43,5 +43,5 @@ func rewriteUrl(url string) string {
 		return url
 	}
 
-	return config.App.Domain + strings.ReplaceAll(url, "./web/app", "")
+	return config.App.Host + strings.ReplaceAll(url, "../web/app", "")
 }
