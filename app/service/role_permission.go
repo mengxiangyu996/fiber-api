@@ -1,8 +1,8 @@
 package service
 
 import (
-	"breeze-api/api/model"
-	"breeze-api/pkg/db"
+	"fiber-api/app/model"
+	"fiber-api/pkg/db"
 )
 
 // 角色权限关系数据服务

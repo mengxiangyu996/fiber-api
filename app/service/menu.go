@@ -1,8 +1,8 @@
 package service
 
 import (
-	"breeze-api/api/model"
-	"breeze-api/pkg/db"
+	"fiber-api/app/model"
+	"fiber-api/pkg/db"
 )
 
 // 菜单数据服务

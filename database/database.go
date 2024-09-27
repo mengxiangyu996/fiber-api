@@ -1,9 +1,9 @@
 package database
 
 import (
-	"breeze-api/api/service"
-	"breeze-api/internal/encrypt"
-	"breeze-api/pkg/db"
+	"fiber-api/app/service"
+	"fiber-api/internal/encrypt"
+	"fiber-api/pkg/db"
 	"io/ioutil"
 	"os"
 	"strings"

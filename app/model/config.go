@@ -1,7 +1,7 @@
 package model
 
 import (
-	"breeze-api/pkg/datetime"
+	"fiber-api/pkg/datetime"
 
 	"gorm.io/gorm"
 )

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"breeze-api/api/model"
-	"breeze-api/pkg/datetime"
-	"breeze-api/pkg/db"
+	"fiber-api/app/model"
+	"fiber-api/pkg/datetime"
+	"fiber-api/pkg/db"
 )
 
 // 管理员数据服务

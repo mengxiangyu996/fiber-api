@@ -1,15 +1,15 @@
-# breeze-api
+# fiber-api
 
 ### 实现 web 快速开发的脚手架
 
 ### 使用说明
 1. ###### 克隆项目
 ```
-git clone https://github.com/mengxiangyu996/breeze-api.git
+git clone https://github.com/mengxiangyu996/fiber-api.git
 ```
 2. ###### 进入目录
 ```
-cd breeze-api
+cd fiber-api
 ```
 3. ###### 修改配置文件
 ```
@@ -19,23 +19,19 @@ mv env.json.example env.json
 ```
 go mod tidy
 ```
-5. ###### 复制依赖到本项目
+5. ###### 启动服务
 ```
-go mod vendor
-```
-6. ###### 启动服务
-```
-go run main.go
+go run cmd\main.go
 ```
 
 ### API文档
-* [点击查看api文档](https://melodious-centaur-e00019.netlify.app/)
+* [点击查看api文档](http://fiber-api.ddnsgeek.com/)
 
 ### 阿里云流水线
 * #### 构建
 ###### 对于常规构建，可以使用以下命令
 ```
-# 默认使用goproxy.cn
+# default use of goproxy.cn
 export GOPROXY=https://goproxy.cn
 # input your command here
 go build main.go

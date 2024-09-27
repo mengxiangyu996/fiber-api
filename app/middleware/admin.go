@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"breeze-api/api/service"
-	"breeze-api/internal/utils"
-	"breeze-api/pkg/response"
+	"fiber-api/app/service"
+	"fiber-api/internal/utils"
+	"fiber-api/pkg/response"
 
 	"github.com/gofiber/fiber/v2"
 )

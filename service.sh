@@ -1,5 +1,5 @@
 #!/bin/bash
-APP=$(pwd)/main
+APP=$(pwd)/cmd/main
 
 # 使用说明
 function usage() {

@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"breeze-api/api/service"
-	"breeze-api/internal/jwt"
+	"fiber-api/app/service"
+	"fiber-api/internal/jwt"
 	"errors"
 	"regexp"
 	"time"
@@ -36,12 +36,7 @@ func GetConfig(name string) string {
 // 获取授权信息
 func GetTokenPayload(ctx *fiber.Ctx) (int, error) {
 	
-	authorization := ctx.Get("Authorization")
-	if authorization == "" {
-		return 0, errors.New("未授权")
-	}
-
-	token := authorization[len("Bearer "):]
+	token := ctx.Get("Token")
 	if token == "" {
 		return 0, errors.New("未授权")
 	}

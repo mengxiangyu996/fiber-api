@@ -1,6 +1,6 @@
 package config
 
-import "breeze-api/pkg/env"
+import "fiber-api/pkg/env"
 
 type RedisConfig struct {
 	Host     string

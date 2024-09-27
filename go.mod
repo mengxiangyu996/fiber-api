@@ -1,4 +1,4 @@
-module breeze-api
+module fiber-api
 
 go 1.18
 

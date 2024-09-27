@@ -1,7 +1,7 @@
 package encrypt
 
 import (
-	"breeze-api/config"
+	"fiber-api/config"
 	"crypto/md5"
 	"encoding/base64"
 	"encoding/hex"

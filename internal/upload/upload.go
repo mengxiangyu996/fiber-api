@@ -1,8 +1,8 @@
 package upload
 
 import (
-	"breeze-api/config"
-	"breeze-api/pkg/storage"
+	"fiber-api/config"
+	"fiber-api/pkg/storage"
 	"encoding/base64"
 	"errors"
 	"io/ioutil"

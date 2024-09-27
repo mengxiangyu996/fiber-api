@@ -1,6 +1,6 @@
 package config
 
-import "breeze-api/pkg/env"
+import "fiber-api/pkg/env"
 
 type MysqlConfig struct {
 	Host     string
@@ -13,7 +13,7 @@ type MysqlConfig struct {
 var Mysql = &MysqlConfig{
 	Host:     env.Get("mysql.host", "127.0.0.1").(string),
 	Port:     int(env.Get("mysql.port", 3306).(float64)),
-	Database: env.Get("mysql.database", "breeze-api").(string),
+	Database: env.Get("mysql.database", "fiber-api").(string),
 	Username: env.Get("mysql.username", "root").(string),
 	Password: env.Get("mysql.password", "root").(string),
 }

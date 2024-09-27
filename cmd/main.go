@@ -1,10 +1,10 @@
 package main
 
 import (
-	router "breeze-api/api/route"
-	"breeze-api/config"
-	"breeze-api/database"
-	"breeze-api/pkg/db"
+	"fiber-api/app/route"
+	"fiber-api/config"
+	"fiber-api/database"
+	"fiber-api/pkg/db"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -41,7 +41,7 @@ func main() {
 	app.Static("/", "./web")
 
 	// 注册路由
-	router.AdminRouter(app)
+	route.AdminRouter(app)
 
 	// 恢复
 	app.Use(recover.New())

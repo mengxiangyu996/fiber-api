@@ -1,20 +1,17 @@
 package model
 
 import (
-	"breeze-api/pkg/datetime"
+	"fiber-api/pkg/datetime"
 
 	"gorm.io/gorm"
 )
 
-// 权限模型
-type Permission struct {
+// 角色菜单关系模型
+type RoleMenu struct {
 	Id         int               `gorm:"autoIncrement"`
 	CreateTime datetime.Datetime `gorm:"autoCreateTime"`
 	UpdateTime datetime.Datetime `gorm:"autoUpdateTime"`
 	DeleteTime gorm.DeletedAt
-	Name       string
-	GroupName  string
-	Path       string
-	Method     string
-	Status     int `grom:"default:1"`
+	RoleId     int
+	MenuId     int
 }

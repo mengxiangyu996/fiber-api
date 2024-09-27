@@ -1,11 +1,11 @@
 package admin
 
 import (
-	"breeze-api/api/service"
-	"breeze-api/internal/encrypt"
-	"breeze-api/internal/jwt"
-	"breeze-api/internal/utils"
-	"breeze-api/pkg/response"
+	"fiber-api/app/service"
+	"fiber-api/internal/encrypt"
+	"fiber-api/internal/jwt"
+	"fiber-api/internal/utils"
+	"fiber-api/pkg/response"
 	"time"
 
 	"github.com/gofiber/fiber/v2"

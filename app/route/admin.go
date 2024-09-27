@@ -1,8 +1,8 @@
-package router
+package route
 
 import (
-	"breeze-api/api/controller/admin"
-	"breeze-api/api/middleware"
+	"fiber-api/app/controller/admin"
+	"fiber-api/app/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -11,14 +11,14 @@ import (
 func AdminRouter(app *fiber.App) {
 
 	// 未授权路由组
-	api := app.Group("api/admin")
+	api := app.Group("admin/api")
 	{
 		api.Post("admin/login", (&admin.Admin{}).Login)            // 管理员登录
 		api.Get("admin/roleMenus", (&admin.Admin{}).AdminRoleMenu) // 管理员的角色和菜单
 	}
 
 	// 授权路由组
-	authApi := app.Group("api/admin", (&middleware.Admin{}).Handle)
+	authApi := app.Group("admin/api", (&middleware.Admin{}).Handle)
 	{
 		// 管理员操作
 		authApi.Post("admin/create", (&admin.Admin{}).Create)                 // 创建管理员
