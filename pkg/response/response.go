@@ -2,7 +2,7 @@ package response
 
 import "github.com/gofiber/fiber/v2"
 
-type Result struct {
+type Response struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
@@ -23,8 +23,8 @@ func Base(ctx *fiber.Ctx, code int, message string, data interface{}) error {
 	return ctx.JSON(result(code, message, data))
 }
 
-func result(code int, message string, data interface{}) *Result {
-	return &Result{
+func result(code int, message string, data interface{}) *Response {
+	return &Response{
 		Code:    code,
 		Message: message,
 		Data:    data,
